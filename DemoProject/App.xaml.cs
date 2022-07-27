@@ -11,6 +11,19 @@ namespace DemoProject
             Startup += Application_Startup;
             UnhandledException += Application_UnhandledException;
 
+#if OPENSILVER
+            System.Diagnostics.Trace.Listeners.Add(new System.Diagnostics.TextWriterTraceListener(Console.Out));
+            System.Diagnostics.Trace.AutoFlush = true;
+
+            //Host.Settings.EnableOptimizationWhereCollapsedControlsAreNotLoaded = true;
+            //Host.Settings.EnableBindingErrorsLogging = true;
+            //Host.Settings.EnableProgressiveRendering = true;
+            //Host.Settings.EnablePerformanceLogging = true;
+            //Host.Settings.EnableWebRequestsLogging = true;
+            //Host.Settings.EnableInteropLogging = true;
+            //Host.Settings.ScrollDebounce = TimeSpan.FromMilliseconds(300);
+#endif
+
             InitializeComponent();
         }
 
