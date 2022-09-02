@@ -1,0 +1,787 @@
+﻿<viewbase:PatientDetailUserControlBase xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                                       xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                                       xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                                       xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                                       xmlns:viewbase="clr-namespace:Virtuoso.Maintenance.Controls"
+                                       xmlns:VirtuosoCoreControls="clr-namespace:Virtuoso.Core.Controls"
+                                       xmlns:Utility="clr-namespace:Virtuoso.Core.Utility"
+                                       xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+                                       xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                                       xmlns:clr="clr-namespace:System;assembly=mscorlib"
+                                       x:Class="Virtuoso.Maintenance.Controls.PatientDetailUserControl"
+                                       mc:Ignorable="d"
+                                       x:Name="pat_detail_ctrl"
+                                       d:DesignHeight="650"
+                                       d:DesignWidth="536">
+
+    <viewbase:PatientDetailUserControlBase.Resources>
+        <clr:String x:Key="GenderCode">GENDER</clr:String>
+        <clr:String x:Key="EducationCode">Education</clr:String>
+        <clr:String x:Key="OccupationCode">OCCUPATION</clr:String>
+        <clr:String x:Key="MaritalStatusCode">MARITALSTATUS</clr:String>
+        <clr:String x:Key="LanguageCode">LANGUAGE</clr:String>
+        <clr:String x:Key="ReligionCode">RELIGION</clr:String>
+
+        <DataTemplate x:Key="PatientGenderExpressionTemplate">
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <!-- Gender Dropdown -->
+                    <ColumnDefinition Width="*"></ColumnDefinition>
+                    <!-- Date Picker -->
+                    <ColumnDefinition Width="150"></ColumnDefinition>
+                    <!-- Date Display -->
+                    <ColumnDefinition Width="120"></ColumnDefinition>
+                    <!-- Remove Button -->
+                    <ColumnDefinition Width="120"></ColumnDefinition>
+                </Grid.ColumnDefinitions>
+                <VirtuosoCoreControls:codeLookup Grid.Column="0"
+                                                 Margin="3,0,3,0"
+                                                 VerticalAlignment="Center"
+                                                 CodeType="GenderExp"
+                                                 IncludeNullItem="False"
+                                                 SelectedKey="{Binding GenderExpressionKey, Mode=TwoWay, NotifyOnValidationError=True}"
+                                                 IsTabStop="{Binding DataContext.IsEdit, ElementName=ControlRoot}"
+                                                 FormatOfSelection="Description"
+                                                 FormatOfDropDown="Description" />
+                <VirtuosoCoreControls:vDatePicker Grid.Column="1"
+                                                  SelectedDateFormat="Short"
+                                                  Width="130"
+                                                  HorizontalAlignment="Left"
+                                                  IsTabStop="{Binding DataContext.IsEdit, ElementName=ControlRoot}"
+                                                  Tag="{Binding EffectiveFromDate, Mode=TwoWay, NotifyOnValidationError=True}"
+                                                  DateObject="{Binding EffectiveFromChanger, Mode=TwoWay, NotifyOnValidationError=True}" />
+                <TextBlock Grid.Column="2"
+                           Margin="16,0,0,0"
+                           Text="{Binding EffectiveThruDate, Mode=TwoWay}" />
+                <HyperlinkButton Grid.Column="3" 
+                                 Command="{Binding DataContext.RemovePatientGenderExpressionCommand, ElementName=ControlRoot}"
+                                 CommandParameter="{Binding}" />
+            </Grid>
+        </DataTemplate>
+    </viewbase:PatientDetailUserControlBase.Resources>
+
+    <Border Background="{StaticResource ControlBackgroundBrush}"
+            BorderBrush="#FFB9B9B9"
+            BorderThickness="1"
+            CornerRadius="1"
+            Padding="5">
+
+        <Grid x:Name="LayoutRoot">
+            <Grid x:Name="ControlRoot"
+                  DataContext="{Binding ElementName=pat_detail_ctrl}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"
+                                   MinHeight="35" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto"
+                                   MinHeight="35" />
+                </Grid.RowDefinitions>
+
+                <ScrollViewer x:Name="DetailAreaScrollViewer"
+                              Grid.Row="0"
+                              VerticalScrollBarVisibility="Visible"
+                              TabNavigation="Cycle">
+                    <!--<i:Interaction.Behaviors>
+                        <VirtuosoCoreBehaviors:ScrollIntoViewBehavior />
+                    </i:Interaction.Behaviors>-->
+                    <Grid ProgressiveRenderingChunkSize="2">
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="Auto" />
+                            <ColumnDefinition Width="*" />
+                            <ColumnDefinition Width="150" />
+                        </Grid.ColumnDefinitions>
+                        <Grid.RowDefinitions>
+                            <!-- 0 First Name -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 1 Middle Initial -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 2 Last Name -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 3 Previous Name -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 4 Nickname -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 5 Suffix -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 6 MRN -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 7 SSN -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 8 Gender -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 9 Gender Identity/Expression -->
+                            <RowDefinition Height="Auto" MinHeight="70" />
+                            <!-- 10 Gender Comments -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 11 Races -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 12 Primary Race -->
+                            <RowDefinition Height="Auto" />
+                            <!-- 13 BirthDate -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 14 Expected Due Date -->
+                            <RowDefinition Height="Auto" />
+                            <!-- 15 Date of Death -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 16 Email -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+
+                            <!-- 17 External Access Modules -->
+                            <RowDefinition Height="Auto" />
+
+                            <!-- 18 Marital Status -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 19 Education -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 20 Occupation -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 21 American Vet -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 22 Employer -->
+                            <RowDefinition Height="Auto" />
+                            <!-- 23 Religion -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 24 Spiritial Practices -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 25 Cultural Practices -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 26 Language -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 27 Translator -->
+                            <RowDefinition Height="Auto" MinHeight="35" />
+                            <!-- 28 Translator -->
+                            <RowDefinition Height="Auto" />
+                            <!-- 29 Translator -->
+                            <RowDefinition Height="Auto" />
+                            <!-- 30 Translator -->
+                            <RowDefinition Height="Auto" />
+                        </Grid.RowDefinitions>
+
+
+                        <!-- 0 First Name -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="0"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="FirstName" />
+                        <TextBox MaxLength="40"
+                                 Grid.Row="0"
+                                 Grid.Column="1"
+                                 TabIndex="1"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text="{Binding SelectedItem.FirstName, Mode=TwoWay, NotifyOnValidationError=True}"
+                                 Utility:FocusHelper.EnsureFocus="{Binding IsBusy, Mode=TwoWay, ElementName=loginBusyIndicator}" />
+
+                        <Border Grid.Row="0"
+                                Grid.RowSpan="6"
+                                Grid.Column="2"
+                                IsHitTestVisible="{Binding IsEdit}"
+                                BorderThickness="1"
+                                Margin="4"
+                                Padding="4">
+                            <StackPanel>
+                                <ItemsControl ItemsSource="{Binding FilteredPhotos, Mode=TwoWay}"
+                                              IsTabStop="False">
+                                    <ItemsControl.ItemTemplate>
+                                        <DataTemplate>
+                                            <StackPanel>
+                                                <!--<VirtuosoCoreConverters:PhotoMultiBinding x:Name="PhotoToUse"
+                                                    Converter="{StaticResource PatientPhotoConverter}"
+                                                    Photo="{Binding Photo, Mode=TwoWay}"
+                                                    Gender="{Binding DataContext.SelectedItem.Gender, ConverterParameter=Gender.description, Converter={StaticResource CodeLookupConverter}, ElementName=ControlRoot, Mode=TwoWay}" />-->
+                                                <TextBlock Text="Photo"/>
+                                                <Image Source="{Binding Output, ElementName=PhotoToUse, Mode=TwoWay}"
+                                                       MaxHeight="150" />
+                                            </StackPanel>
+                                        </DataTemplate>
+                                    </ItemsControl.ItemTemplate>
+                                </ItemsControl>
+                                <Button Content="Import Photo"
+                                        Margin="4"
+                                        Width="100"
+                                        IsTabStop="{Binding IsEdit}"
+                                        IsHitTestVisible="{Binding IsEdit}"
+                                        
+                                        Command="{Binding ImportPhotoCommand}" />
+                            </StackPanel>
+                        </Border>
+                        <!-- 1 Middle Initial -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="1"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="MiddleName" />
+                        <TextBox MaxLength="1"
+                                 Grid.Row="1"
+                                 Grid.Column="1"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text="{Binding SelectedItem.MiddleName, Mode=TwoWay, NotifyOnValidationError=True}" />
+                        <!-- 2 Last Name -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="2"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="LastName" />
+                        <TextBox MaxLength="45"
+                                 Grid.Row="2"
+                                 Grid.Column="1"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text="{Binding SelectedItem.LastName, Mode=TwoWay, NotifyOnValidationError=True}" />
+                        <!-- 3 Previous Name -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="3"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="PreviousName" />
+                        <TextBox MaxLength="45"
+                                 Grid.Row="3"
+                                 Grid.Column="1"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text="{Binding SelectedItem.PreviousName, Mode=TwoWay, NotifyOnValidationError=True}" />
+                        <!-- 4 Nickname -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="4"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="NickName" />
+                        <TextBox MaxLength="40"
+                                 Grid.Row="4"
+                                 Grid.Column="1"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text="{Binding SelectedItem.NickName, Mode=TwoWay, NotifyOnValidationError=True}" />
+
+                        <!-- 5 Suffix -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="5"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="Suffix" />
+                        <TextBox MaxLength="6"
+                                 Grid.Row="5"
+                                 Grid.Column="1"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text="{Binding SelectedItem.Suffix, Mode=TwoWay, NotifyOnValidationError=True}" />
+                        <!-- 6 MRN -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="6"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="MRN" />
+                        <Grid Grid.Row="6"
+                              Grid.Column="1"
+                              IsHitTestVisible="{Binding IsEdit}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                                <ColumnDefinition Width="Auto" />
+                            </Grid.ColumnDefinitions>
+                            <TextBox Grid.Column="0"
+                                     MaxLength="17"
+                                     IsTabStop="{Binding IsEdit}"
+                                     IsHitTestVisible="{Binding IsEdit}"
+                                     IsReadOnly="{Binding DataContext.IsMRNReadOnly, ElementName=LayoutRoot}"
+                                     Text="{Binding SelectedItem.MRN, Mode=TwoWay, ValidatesOnDataErrors=True, ValidatesOnExceptions=True, ValidatesOnNotifyDataErrors=True, NotifyOnValidationError=True}">
+                                <!--<i:Interaction.Behaviors>
+                                    <VirtuosoCoreBehaviors:TrimTextBoxBehavior />
+                                </i:Interaction.Behaviors>-->
+                            </TextBox>
+                            <Button Grid.Column="1"
+                                    Margin="10,0,0,0"
+                                    IsTabStop="{Binding IsEdit}"
+                                    IsHitTestVisible="{Binding IsEdit}"
+                                    Content="Generate MRN"
+                                    VerticalAlignment="Center"
+                                    HorizontalAlignment="Left"
+                                    Command="{Binding DataContext.GetMRNCommand, ElementName=LayoutRoot}"
+                                    CommandParameter="{Binding ElementName=textSSN}" />
+                        </Grid>
+                        <!-- 7 SSN -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="7"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="SSN" />
+                        <TextBox Grid.Row="7"
+                                 Grid.Column="1"
+                                 Name="textSSN"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text=""
+                                />
+                        <!-- 8 Gender -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="8"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="Gender" />
+                        <VirtuosoCoreControls:codeLookup Grid.Row="8"
+                                                         Grid.Column="1"
+                                                         IsTabStop="{Binding IsEdit}"
+                                                         IsHitTestVisible="{Binding IsEdit}"
+                                                         CodeType=""
+                                                         IncludeNullItem="True"
+                                                         FormatOfDropDown="Description"
+                                                         FormatOfSelection="Description"
+                                                         SelectedKey="{Binding SelectedItem.Gender, Mode=TwoWay, NotifyOnValidationError=True}"
+                                                         VerticalAlignment="Center">
+                        </VirtuosoCoreControls:codeLookup>
+                        <!-- 9 Gender Identity/Expression -->
+                        <TextBlock Grid.Row="9"
+                                   Grid.Column="0"
+                                   Text="Gender Identity/&#10;Expression"
+                                   TextWrapping="Wrap"
+                                   Margin="20,0,0,0" />
+                        <Grid Grid.Row="9" Grid.Column="1"
+                              IsHitTestVisible="{Binding IsEdit}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <!-- 0 Table Header -->
+                                <RowDefinition Height="Auto" MinHeight="35" />
+                                <!-- 1 Data Table -->
+                                <RowDefinition Height="Auto" />
+                                <!-- 3 Add Button -->
+                                <RowDefinition Height="Auto" MinHeight="35" />
+                            </Grid.RowDefinitions>
+                            <Grid Grid.Row="0" Grid.Column="0">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="*"></ColumnDefinition>
+                                    <ColumnDefinition Width="150"></ColumnDefinition>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                    <ColumnDefinition Width="120"></ColumnDefinition>
+                                </Grid.ColumnDefinitions>
+                                <TextBlock Grid.Row="0" Grid.Column="0" Text="Gender Identity/Expression"
+                                           HorizontalAlignment="Left" Margin="10,0,3,0" />
+                                <TextBlock Grid.Row="0" Grid.Column="1" Text="From Date" HorizontalAlignment="Left"
+                                           Margin="10,0,3,0" />
+                                <TextBlock Grid.Row="0" Grid.Column="2" Text="Thru Date" HorizontalAlignment="Left"
+                                           Margin="10,0,3,0" />
+                            </Grid>
+                            <ListBox x:Name="PatientGenderExpressionListBox"
+                                     Grid.Row="1" Grid.Column="0"
+                                     IsEnabled="{Binding IsEdit, FallbackValue=True}"
+                                     ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                     ItemsSource="{Binding PatientGenderExpressionCVS, Mode=TwoWay, NotifyOnValidationError=True}"
+                                     IsTabStop="False" TabNavigation="Local"
+                                     Tag="{Binding PatientGenderExpressionTag, Mode=TwoWay, NotifyOnValidationError=True}"
+                                     >
+                            </ListBox>
+                            <HyperlinkButton Grid.Row="2" Grid.Column="0"
+                                             HorizontalAlignment="Left"
+                                             Content="Add Gender Identity/Expression"
+                                             IsTabStop="{Binding IsEdit}"
+                                             IsHitTestVisible="{Binding IsEdit}"
+                                             VerticalAlignment="Top"
+                                             
+                                             Command="{Binding AddPatientGenderExpressionCommand}"
+                                             
+                                             IsEnabled="{Binding IsEdit}">
+                            </HyperlinkButton>
+                        </Grid>
+
+                        <!-- 10 Gender Comments -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="10"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="GenderExpressionComment" />
+                        <TextBox MaxLength="3000"
+                                 Grid.Row="10"
+                                 Grid.Column="1"
+                                 AcceptsReturn="True"
+                                 TextWrapping="Wrap"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text="{Binding SelectedItem.GenderExpressionComment, Mode=TwoWay, NotifyOnValidationError=True}" />
+                        <!-- 11 Races -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="11"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="Races" />
+                        <!--<VirtuosoCoreControls:codeLookupMulti Grid.Row="11"
+                                                              Grid.Column="1"
+                                                              CodeType="RACES"
+                                                              IncludeOther="False"
+                                                              IsTabStop="{Binding IsEdit}"
+                                                              IsHitTestVisible="{Binding IsEdit}"
+                                                              SelectedValues="{Binding SelectedItem.Races, Mode=TwoWay, NotifyOnValidationError=True}"
+                                                              VerticalAlignment="Center" />-->
+                        <!-- 12 Primary Race -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="12"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="PrimaryRaceKey" />
+
+                        <ComboBox Grid.Row="12"
+                                  Grid.Column="1"
+                                  ItemsSource="{Binding SelectedItem.SelectedRaceValues, NotifyOnValidationError=True}"
+                                  DisplayMemberPath="CodeDescription"
+                                  SelectedValuePath="CodeLookupKey"
+                                  SelectedValue="{Binding SelectedItem.PrimaryRaceKey, Mode=TwoWay, NotifyOnValidationError=True}"
+                                  IsTabStop="{Binding IsEdit}"
+                                  IsHitTestVisible="{Binding IsEdit}" />
+                        <!-- 13 BirthDate -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="13"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="BirthDate" />
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="13"
+                                    Grid.Column="1"
+                                    IsHitTestVisible="{Binding IsEdit}">
+                            <VirtuosoCoreControls:vDatePicker IsEnabled="{Binding IsEdit, FallbackValue=True}"
+                                                              SelectedDateFormat="Short"
+                                                              Width="130"
+                                                              HorizontalAlignment="Left"
+                                                              DateObject="{Binding SelectedItem.BirthDate, Mode=TwoWay, NotifyOnValidationError=True}" />
+                            <TextBlock Margin="16,0,0,0"
+                                       Text="{Binding SelectedItem.PatientAge, Mode=TwoWay}" />
+                        </StackPanel>
+                        <!-- 14 Expected Due Date -->
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="14"
+                                    Grid.Column="0"
+                                    IsHitTestVisible="{Binding IsEdit}">
+                            <VirtuosoCoreControls:vLabel Entity="Patient"
+                                                         Property="ExpectedDueDate" />
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="14"
+                                    Grid.Column="1"
+                                    IsHitTestVisible="{Binding IsEdit}">
+                            <VirtuosoCoreControls:vDatePicker IsEnabled="{Binding IsEdit, FallbackValue=True}"
+                                                              SelectedDateFormat="Short"
+                                                              Width="130"
+                                                              HorizontalAlignment="Left"
+                                                              DateObject="{Binding SelectedItem.ExpectedDueDate, Mode=TwoWay, NotifyOnValidationError=True}" />
+                        </StackPanel>
+                        <!-- 15 Date of Death -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="15"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="DeathDate" />
+                        <VirtuosoCoreControls:vDatePicker Grid.Row="15"
+                                                          Grid.Column="1"
+                                                          SelectedDateFormat="Short"
+                                                          Width="130"
+                                                          HorizontalAlignment="Left"
+                                                          IsEnabled="{Binding CanEditDeathDate, FallbackValue=False}"
+                                                          DateObject="{Binding SelectedItem.DeathDate, Mode=TwoWay, NotifyOnValidationError=True}" />
+                        <!-- 16 Email -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="16"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="EmailAddress" />
+                        <TextBox MaxLength="120"
+                                 Grid.Row="16"
+                                 Grid.Column="1"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text="{Binding SelectedItem.EmailAddress, Mode=TwoWay, NotifyOnValidationError=True}" />
+
+                        <!-- 17 Module Access -->
+                        <Grid Grid.Row="17"
+                              Grid.Column="1"
+                              HorizontalAlignment="Stretch"
+                              VerticalAlignment="Stretch">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <Border Effect="{StaticResource DropShadowBrush}"
+                                    Margin="0,6,0,12"
+                                    x:Name="PopupBorder2"
+                                    BorderThickness="1"
+                                    HorizontalAlignment="Stretch"
+                                    Height="Auto"
+                                    
+                                    BorderBrush="{StaticResource ComboBoxPopupBrush}"
+                                    Background="{StaticResource GrayBrush8}">
+                                <Grid>
+                                    <Grid.ColumnDefinitions>
+                                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                                        <ColumnDefinition Width="*"></ColumnDefinition>
+                                    </Grid.ColumnDefinitions>
+                                    <Grid.RowDefinitions>
+                                        <!-- 0 Title -->
+                                        <RowDefinition Height="Auto" />
+                                        <!-- 1 Invite Sent Date / Send Invite -->
+                                        <RowDefinition Height="Auto" />
+                                        <!-- 2 Last Access Date -->
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+                                    <TextBlock Grid.Row="0"
+                                               Grid.Column="0"
+                                               Grid.ColumnSpan="2"
+                                               Text="{Binding SelectedItem.ModuleAccessName, Mode=TwoWay}"
+                                               FontSize="18"
+                                               Margin="12,3,12,1"
+                                               FontWeight="Bold" />
+                                    <TextBlock Grid.Row="1" Grid.Column="0"
+                                               Margin="12,1,1,1">
+                                        Invite Sent:
+                                    </TextBlock>
+                                    <TextBlock Grid.Row="1" Grid.Column="1"
+                                               Text="{Binding SelectedItem.ModuleInviteDate, Mode=TwoWay}"
+                                               Margin="12,1,0,0">
+                                    </TextBlock>
+                                    <Button Grid.Row="2"
+                                            Grid.Column="0"
+                                            Grid.ColumnSpan="2"
+                                            Content="{Binding SendInviteButtonText, Mode=TwoWay}"
+                                            Margin="4"
+                                            Width="300"
+                                            Height="35"
+                                            VerticalAlignment="Center"
+                                            HorizontalAlignment="Left"
+                                            Command="{Binding SendInviteToPatientPortal}" />
+                                    <TextBlock Grid.Row="2" Grid.Column="0"
+                                               Margin="12,1,1,1">
+                                        Last Access:
+                                    </TextBlock>
+                                    <TextBlock Grid.Row="2" Grid.Column="1"
+                                               Text="{Binding SelectedItem.ModuleAccessedDate, Mode=TwoWay}"
+                                               Margin="12,1,1,1">
+                                    </TextBlock>
+                                </Grid>
+                            </Border>
+                        </Grid>
+
+                        <!-- 18 Marital Status -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="18"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="MaritalStatus" />
+                        <VirtuosoCoreControls:codeLookup Grid.Row="18"
+                                                         Grid.Column="1"
+                                                         IsTabStop="{Binding IsEdit}"
+                                                         IsHitTestVisible="{Binding IsEdit}"
+                                                         IncludeNullItem="False"
+                                                         FormatOfDropDown="Description"
+                                                         FormatOfSelection="Description"
+                                                         SelectedKey="{Binding SelectedItem.MaritalStatus, Mode=TwoWay, NotifyOnValidationError=True}"
+                                                         VerticalAlignment="Center">
+                        </VirtuosoCoreControls:codeLookup>
+                        <!-- 19 Education -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="19"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="EducationKey" />
+                        <VirtuosoCoreControls:codeLookup Grid.Row="19"
+                                                         Grid.Column="1"
+                                                         IsTabStop="{Binding IsEdit}"
+                                                         IsHitTestVisible="{Binding IsEdit}"
+                                                         IncludeNullItem="True"
+                                                         FormatOfDropDown="Description"
+                                                         FormatOfSelection="Description"
+                                                         VerticalAlignment="Center">
+                        </VirtuosoCoreControls:codeLookup>
+                        <!-- 20 Occupation -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="20"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="Occupation" />
+                        <!--<VirtuosoCoreControls:codeLookupMulti Grid.Row="20"
+                                                              Grid.Column="1"
+                                                              IsTabStop="{Binding IsEdit}"
+                                                              IsHitTestVisible="{Binding IsEdit}"
+                                                              CodeType="OCCUPATION"
+                                                              IncludeOther="True"
+                                                              SingleSelect="True"
+                                                              SelectedValues="{Binding SelectedItem.Occupation, Mode=TwoWay, NotifyOnValidationError=True}"
+                                                              VerticalAlignment="Center" />-->
+                        <!-- 21 American Vet -->
+                        <TextBlock Grid.Row="21"
+                                   Grid.Column="0"
+                                   Text="American Veteran"
+                                   Margin="18,0,0,0" />
+                        <StackPanel Orientation="Horizontal"
+                                    Grid.Row="21"
+                                    IsHitTestVisible="{Binding IsEdit}"
+                                    Grid.Column="1">
+
+                            <StackPanel Orientation="Horizontal" VerticalAlignment="Center" Margin="4,0,0,0">
+                                <RadioButton Content="Yes"
+                                             IsChecked="{Binding SelectedItem.PatientServed, Mode=TwoWay}" />
+                                <RadioButton Content="No"
+                                             Margin="4,0,0,0" />
+                            </StackPanel>
+                            <TextBlock Text="Enrolled in VA?" Margin="30,0,0,0" />
+                            <StackPanel Orientation="Horizontal"
+                                        VerticalAlignment="Center"
+                                        Margin="4,0,0,0">
+                                <RadioButton Content="Yes"
+                                             IsChecked="{Binding SelectedItem.EnrolledInVA, Mode=TwoWay}" />
+                                <RadioButton Content="No"
+                                             Margin="4,0,0,0" />
+                            </StackPanel>
+                        </StackPanel>
+                        <!-- 22 Employer -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="22"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="Employer"/>
+                        <TextBox Grid.Row="22"
+                                 Grid.Column="1"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text="{Binding SelectedItem.Employer, Mode=TwoWay, NotifyOnValidationError=True}" />
+                        <!-- 23 Religion -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="23"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="Religion" />
+                        <VirtuosoCoreControls:codeLookup Grid.Row="23"
+                                                         Grid.Column="1"
+                                                         IsTabStop="{Binding IsEdit}"
+                                                         IsHitTestVisible="{Binding IsEdit}"
+                                                         IncludeNullItem="False"
+                                                         FormatOfDropDown="Description"
+                                                         FormatOfSelection="Description"
+                                                         SelectedKey="{Binding SelectedItem.Religion, Mode=TwoWay, NotifyOnValidationError=True}"
+                                                         VerticalAlignment="Center">
+                        </VirtuosoCoreControls:codeLookup>
+                        <!-- 24 Spiritial Practices -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="24"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="SpiritualPractices" />
+                        <TextBox Grid.Row="24"
+                                 Grid.Column="1"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text="{Binding SelectedItem.SpiritualPractices, Mode=TwoWay, NotifyOnValidationError=True}" />
+                        <!-- 25 Cultural Practices -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="25"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="CulturalPractices" />
+                        <TextBox Grid.Row="25"
+                                 Grid.Column="1"
+                                 IsTabStop="{Binding IsEdit}"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 Text="{Binding SelectedItem.CulturalPractices, Mode=TwoWay, NotifyOnValidationError=True}" />
+                        <!-- 26 Language -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="26"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="Language" />
+                        <VirtuosoCoreControls:codeLookup Grid.Row="26"
+                                                         Grid.Column="1"
+                                                         IsTabStop="{Binding IsEdit}"
+                                                         IsHitTestVisible="{Binding IsEdit}"
+                                                         IncludeNullItem="False"
+                                                         FormatOfDropDown="Description"
+                                                         FormatOfSelection="Description"
+                                                         SelectedKey="{Binding SelectedItem.Language, Mode=TwoWay, NotifyOnValidationError=True}"
+                                                         VerticalAlignment="Center">
+                        </VirtuosoCoreControls:codeLookup>
+                        <!-- 27 Translator -->
+                        <!-- 28 Translator -->
+                        <!-- 29 Translator -->
+                        <!-- 30 Translator -->
+                        <VirtuosoCoreControls:vLabel Grid.Row="27"
+                                                     Grid.Column="0"
+                                                     Entity="Patient"
+                                                     Property="Translator" />
+                        <CheckBox x:Name="cbTranslator"
+                                  Grid.Row="27"
+                                  Grid.Column="1"
+                                  IsTabStop="{Binding IsEdit}"
+                                  IsHitTestVisible="{Binding IsEdit}"
+                                  IsChecked="{Binding SelectedItem.Translator, Mode=TwoWay, NotifyOnValidationError=True}"
+                                  VerticalAlignment="Center" />
+                        <Grid Grid.Row="28"
+                              Grid.Column="1"
+                              IsHitTestVisible="{Binding IsEdit}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="2*" />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition />
+                                <ColumnDefinition Width="25" />
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="Name" />
+                            <TextBlock Grid.Column="1"
+                                       Margin="4,0"
+                                       Text="Number" />
+                            <TextBlock Grid.Column="2"
+                                       Margin="4,0"
+                                       Text="Effective From" />
+                            <TextBlock Grid.Column="3"
+                                       Margin="4,0"
+                                       Text="Effective Thru" />
+                        </Grid>
+                        <ListBox Grid.Row="29"
+                                 Grid.Column="1"
+                                 IsHitTestVisible="{Binding IsEdit}"
+                                 ItemsSource="{Binding SelectedItem.PatientTranslator, Mode=TwoWay}"
+                                 ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                                 IsTabStop="False" TabNavigation="Local">
+                            <ListBox.ItemTemplate>
+                                <DataTemplate>
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="2*" />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition />
+                                            <ColumnDefinition Width="25" />
+                                        </Grid.ColumnDefinitions>
+                                        <TextBox 
+                                                 IsTabStop="{Binding IsEdit}"
+                                                 IsHitTestVisible="{Binding IsEdit}"
+                                                 Text="{Binding Name, Mode=TwoWay, NotifyOnValidationError=True}" />
+                                        <TextBox Grid.Column="1"
+                                                 Margin="4"
+                                                 IsTabStop="{Binding IsEdit}"
+                                                 IsHitTestVisible="{Binding IsEdit}"
+                                                 />
+                                        <VirtuosoCoreControls:vDatePicker Grid.Column="2"
+                                                                          IsEnabled="{Binding IsEdit}"
+                                                                          IsHitTestVisible="{Binding IsEdit}"
+                                                                          Margin="4"
+                                                                          DateObject="{Binding EffectiveFromDate, Mode=TwoWay, NotifyOnValidationError=True}" />
+                                        <VirtuosoCoreControls:vDatePicker Grid.Column="3"
+                                                                          IsEnabled="{Binding IsEdit}"
+                                                                          IsHitTestVisible="{Binding IsEdit}"
+                                                                          Margin="4"
+                                                                          DateObject="{Binding EffectiveThruDate, Mode=TwoWay, NotifyOnValidationError=True}" />
+                                        <Button Grid.Column="4"
+                                                Height="21"
+                                                Width="21"
+                                                IsTabStop="{Binding IsEdit}"
+                                                IsHitTestVisible="{Binding IsEdit}"
+                                                VerticalAlignment="Center"
+                                                HorizontalAlignment="Left"
+                                                Command="{Binding DataContext.RemoveTranslatorCommand, ElementName=ControlRoot}"
+                                                CommandParameter="{Binding}"
+                                                />
+                                    </Grid>
+                                </DataTemplate>
+                            </ListBox.ItemTemplate>
+                        </ListBox>
+                        <Grid Grid.Row="30"
+                              Grid.Column="1"
+                             >
+                            <HyperlinkButton 
+                                             Margin="0,4,0,12"
+                                             IsTabStop="{Binding IsEdit}"
+                                             IsHitTestVisible="{Binding IsEdit}"
+                                             HorizontalAlignment="Left"
+                                             Content="Add Translator"
+                                             Command="{Binding AddTranslatorCommand}" />
+                        </Grid>
+                    </Grid>
+                </ScrollViewer>
+
+                <sdk:ValidationSummary Grid.Row="1" />
+
+                <!--<VirtuosoCoreControls:OKCancelEditStackPanel EditWhat="Patient"
+                                                             Grid.Row="2"
+                                                             VerticalAlignment="Bottom"
+                                                             HorizontalAlignment="Right"
+                                                             Visibility="{Binding SelectedItem.IsPatientMaintenance, Converter={StaticResource RoleAccessPlusBoolVisibility}, ConverterParameter='PatientEdit', FallbackValue=Collapsed}" />-->
+
+            </Grid>
+        </Grid>
+    </Border>
+</viewbase:PatientDetailUserControlBase>

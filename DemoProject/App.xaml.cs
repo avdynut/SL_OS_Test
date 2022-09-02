@@ -15,6 +15,8 @@ namespace DemoProject
             System.Diagnostics.Trace.Listeners.Add(new System.Diagnostics.TextWriterTraceListener(Console.Out));
             System.Diagnostics.Trace.AutoFlush = true;
 
+            Host.Settings.ProgressiveRenderingChunkSize = 10;
+            //Host.Settings.PopupMoveDelay = TimeSpan.FromMilliseconds(200);
             //Host.Settings.EnableOptimizationWhereCollapsedControlsAreNotLoaded = true;
             //Host.Settings.EnableBindingErrorsLogging = true;
             //Host.Settings.EnableProgressiveRendering = true;

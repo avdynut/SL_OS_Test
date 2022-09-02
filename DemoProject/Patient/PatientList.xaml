@@ -1,0 +1,535 @@
+﻿<coreview:PageBaseTab x:Class="Virtuoso.Maintenance.Views.PatientList"
+                      xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                      xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                      xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+                      xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+                      mc:Ignorable="d"
+                      xmlns:VirtuosoCoreControls="clr-namespace:Virtuoso.Core.Controls"
+                      xmlns:VirtuosoMaintenanceControls="clr-namespace:Virtuoso.Maintenance.Controls"
+                      xmlns:VirtuosoUtility="clr-namespace:Virtuoso.Core.Utility"
+                      xmlns:layoutToolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit"
+                      xmlns:coreview="clr-namespace:Virtuoso.Core.View"
+                      xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+                      xmlns:i="http://schemas.microsoft.com/expression/2010/interactivity"
+                      d:DesignWidth="1119"
+                      d:DesignHeight="480"
+                      Title="Patient Maintenance Page">
+    <Border x:Name="LayoutRoot"
+            BorderThickness="90,0">
+        <VirtuosoCoreControls:VirtuosoBusyIndicator IsBusy="{Binding IsBusy}">
+            <Grid x:Name="wellGrid">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*" />
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
+
+                <layoutToolkit:TransitioningContentControl x:Name="wellContent"
+                                                           Grid.Row="0"
+                                                           Grid.Column="0"
+                                                           HorizontalContentAlignment="Stretch"
+                                                           VerticalContentAlignment="Stretch"
+                                                           IsTabStop="False">
+                </layoutToolkit:TransitioningContentControl>
+
+                <layoutToolkit:TransitioningContentControl x:Name="formContent"
+                                                           Grid.Row="1"
+                                                           Grid.Column="0"
+                                                           Visibility="Collapsed">
+                    <layoutToolkit:TransitioningContentControl.Content>
+                        <Grid x:Name="wellFormGrid">
+                            <Grid Width="Auto"
+                                  Height="Auto"
+                                  Margin="8,8,8,0">
+                                <sdk:TabControl x:Name="pageTabControl"
+                                                SelectedIndex="{Binding InitialTabIndex, Mode=TwoWay}"
+                                                Margin="0,0,0,8">
+                                    <VirtuosoCoreControls:EditTabItem Header="0">
+                                        <TextBlock Text="Hello"/>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem Header="1">
+                                        <TextBlock Text="Hello1"/>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem IsEdit="{Binding IsDetailEdit, Mode=TwoWay}"
+                                                                      Header="patient"
+                                                                      x:Name="tabItemDetails">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=detailUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientDetailUserControl
+                                            x:Name="detailUserControl">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                                <i:EventTrigger EventName="CancelPressed">
+                                                    <i:InvokeCommandAction Command="{Binding CancelCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientDetailUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <!--<VirtuosoCoreControls:EditTabItem IsEdit="{Binding IsAddressEdit, Mode=TwoWay}"
+                                                                      IsTabStop="False"
+                                                                      Header="Address"
+                                                                      Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                                                      x:Name="tabItemAddress">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=addressUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientAddressUserControl
+                                            x:Name="addressUserControl"
+                                            IsTabStop="False"
+                                            IsEdit="{Binding IsAddressEdit, Mode=TwoWay}"
+                                            ItemsSource="{Binding SelectedPatient.PatientAddress, Mode=TwoWay}"
+                                            Model="{Binding PatientModel}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientAddressUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem IsEdit="{Binding IsPhoneEdit, Mode=TwoWay}"
+                                                                      Header="Phone"
+                                                                      Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                                                      x:Name="tabItemPhone">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=phoneUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientPhoneUserControl x:Name="phoneUserControl"
+                                            IsEdit="{Binding IsPhoneEdit, Mode=TwoWay}"
+                                            ItemsSource="{Binding SelectedPatient.PatientPhone, Mode=TwoWay}"
+                                            Model="{Binding PatientModel}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientPhoneUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem IsEdit="{Binding IsContactEdit, Mode=TwoWay}"
+                                                                      Header="Contact"
+                                                                      Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                                                      x:Name="tabItemContact">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=contactUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientContactUserControl
+                                            x:Name="contactUserControl"
+                                            IsEdit="{Binding IsContactEdit, Mode=TwoWay}"
+                                            SortOrder="LastName|FirstName"
+                                            ItemsSource="{Binding SelectedPatient.PatientContact, Mode=TwoWay}"
+                                            Model="{Binding PatientModel}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientContactUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem IsEdit="{Binding IsInsuranceEdit, Mode=TwoWay}"
+                                                                      Header="Insurance"
+                                                                      Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                                                      x:Name="tabItemInsurance">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=insuranceUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientInsuranceUserControl
+                                            x:Name="insuranceUserControl"
+                                            IsEdit="{Binding IsInsuranceEdit, Mode=TwoWay}"
+                                            ContactItemsSource="{Binding SelectedPatient.PatientContact, Mode=TwoWay}"
+                                            ItemsSource="{Binding SelectedPatient.PatientInsurance, Mode=TwoWay}"
+                                            Model="{Binding PatientModel}"
+                                            ParentViewModel="{Binding ThisDataContext}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientInsuranceUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem IsEdit="{Binding IsAllergyEdit, Mode=TwoWay}"
+                                                                      Header="Allergen"
+                                                                      Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                                                      x:Name="tabItemAllergy">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=allergyUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientAllergyUserControl
+                                            x:Name="allergyUserControl"
+                                            IsEdit="{Binding IsAllergyEdit, Mode=TwoWay}"
+                                            ItemsSource="{Binding SelectedPatient.PatientAllergy, Mode=TwoWay}"
+                                            NewPatientAllergy="{Binding NewPatientAllergy, Mode=TwoWay}"
+                                            ParentViewModel="{Binding ThisDataContext, Mode=TwoWay}"
+                                            Model="{Binding PatientModel}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                                <i:EventTrigger EventName="DeletePatientAllergyPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                                <i:EventTrigger EventName="SearchClosed">
+                                                    <i:InvokeCommandAction
+                                                        Command="{Binding AllergySearchClosedCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientAllergyUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem IsEdit="{Binding IsDiagEdit, Mode=TwoWay}"
+                                                                      Header="Diag History"
+                                                                      Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                                                      x:Name="tabItemDiagnoses">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=diagUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientDiagnosisUserControl
+                                            x:Name="diagUserControl"
+                                            IsEdit="{Binding IsDiagEdit, Mode=TwoWay}"
+                                            Patient="{Binding SelectedPatient, Mode=TwoWay}"
+                                            ItemsSource="{Binding SelectedPatient.AdmissionDiagnosis, Mode=TwoWay}"
+                                            SortOrder="DiagnosisStatus|Sequence"
+                                            Model="{Binding PatientModel}">
+
+                                        </VirtuosoMaintenanceControls:PatientDiagnosisUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem
+                                        Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                        IsEdit="{Binding IsFacilityStayEdit, Mode=TwoWay}"
+                                        Header="Facility Stay"
+                                        x:Name="tabItemFacilityStays">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=patientFacilityStayUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientFacilityStayUserControl
+                                            x:Name="patientFacilityStayUserControl"
+                                            IsEdit="{Binding IsFacilityStayEdit, Mode=TwoWay}"
+                                            CurrentPatient="{Binding SelectedPatient, Mode=TwoWay}"
+                                            ParentViewModel="{Binding ThisDataContext}"
+                                            ItemsSource="{Binding SelectedPatient.PatientFacilityStay, Mode=TwoWay}"
+                                            SortOrder="FacilityName"
+                                            Model="{Binding PatientModel}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientFacilityStayUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem IsEdit="{Binding IsPharmEdit, Mode=TwoWay}"
+                                                                      Header="Pharmacy"
+                                                                      Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                                                      x:Name="tabItemPharmacy">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=pharmUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientPharmacyUserControl
+                                            x:Name="pharmUserControl"
+                                            IsEdit="{Binding IsPharmEdit, Mode=TwoWay}"
+                                            ItemsSource="{Binding SelectedPatient.PatientPharmacy, Mode=TwoWay}"
+                                            CurrentPatient="{Binding SelectedPatient, Mode=TwoWay}"
+                                            Model="{Binding PatientModel}"
+                                            ParentViewModel="{Binding ThisDataContext}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                                <i:EventTrigger EventName="PharmacyOKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientPharmacyUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem
+                                        IsEdit="{Binding IsImmunizationEdit, Mode=TwoWay}"
+                                        Header="Immunization Hx"
+                                        Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                        x:Name="tabItemImmunization">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=Immunization}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientImmunizationUserControl
+                                            x:Name="Immunization"
+                                            IsEdit="{Binding IsImmunizationEdit, Mode=TwoWay}"
+                                            ItemsSource="{Binding SelectedPatient.PatientImmunization, Mode=TwoWay}"
+                                            CurrentPatient="{Binding SelectedPatient, Mode=TwoWay}"
+                                            Model="{Binding PatientModel}"
+                                            ParentViewModel="{Binding ThisDataContext}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientImmunizationUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem IsEdit="{Binding IsMedEdit, Mode=TwoWay}"
+                                                                      Header="Medication"
+                                                                      Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                                                      x:Name="tabItemMedication">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=medUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientMedicationUserControl
+                                            x:Name="medUserControl"
+                                            ParentViewModel="{Binding ThisDataContext, Mode=TwoWay}"
+                                            IsEdit="{Binding IsMedEdit, Mode=TwoWay}"
+                                            ItemsSource="{Binding SelectedPatient.PatientMedication, Mode=TwoWay}"
+                                            Model="{Binding PatientModel}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                                <i:EventTrigger EventName="AdministrationOKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                                <i:EventTrigger EventName="ReconcileOKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                                <i:EventTrigger EventName="TeachingOKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientMedicationUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+                                    <VirtuosoCoreControls:EditTabItem IsEdit="{Binding IsLabEdit, Mode=TwoWay}"
+                                                                      Header="Labs/Tests"
+                                                                      Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                                                      x:Name="tabItemLab">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=labUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientLabUserControl x:Name="labUserControl"
+                                            IsEdit="{Binding IsLabEdit, Mode=TwoWay}"
+                                            ItemsSource="{Binding SelectedPatient.PatientLab, Mode=TwoWay}"
+                                            ParentViewModel="{Binding ThisDataContext}"
+                                            Model="{Binding PatientModel}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientLabUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+
+                                    <VirtuosoCoreControls:EditTabItem IsEdit="{Binding IsInfectionEdit, Mode=TwoWay}"
+                                                                      Header="Adverse Events"
+                                                                      Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                                                      x:Name="tabItemInfection">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=infectionUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <Grid>
+                                            <Grid.RowDefinitions>
+                                                <RowDefinition Height="*" />
+                                                <RowDefinition Height="*" />
+                                            </Grid.RowDefinitions>
+
+                                            <VirtuosoMaintenanceControls:PatientInfectionUserControl
+                                                x:Name="infectionUserControl" Grid.Row="0"
+                                                IsEdit="{Binding IsInfectionEdit, Mode=TwoWay}"
+                                                ItemsSource="{Binding SelectedPatient.PatientInfection, Mode=TwoWay}"
+                                                CurrentPatient="{Binding SelectedPatient, Mode=TwoWay}"
+                                                ParentViewModel="{Binding ThisDataContext}"
+                                                Model="{Binding PatientModel}">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="OKPressed">
+                                                        <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </VirtuosoMaintenanceControls:PatientInfectionUserControl>
+                                            <VirtuosoMaintenanceControls:PatientAdverseEventUserControl
+                                                x:Name="adverseEventUserControl" Grid.Row="1"
+                                                IsEdit="{Binding IsInfectionEdit, Mode=TwoWay}"
+                                                ItemsSource="{Binding SelectedPatient.PatientAdverseEvent, Mode=TwoWay}"
+                                                CurrentPatient="{Binding SelectedPatient, Mode=TwoWay}"
+                                                ParentViewModel="{Binding ThisDataContext}"
+                                                Model="{Binding PatientModel}">
+                                                <i:Interaction.Triggers>
+                                                    <i:EventTrigger EventName="OKPressed">
+                                                        <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                    </i:EventTrigger>
+                                                </i:Interaction.Triggers>
+                                            </VirtuosoMaintenanceControls:PatientAdverseEventUserControl>
+                                        </Grid>
+                                    </VirtuosoCoreControls:EditTabItem>
+
+                                    <VirtuosoCoreControls:EditTabItem
+                                        Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                        IsEdit="{Binding IsPatientMessageEdit, Mode=TwoWay}"
+                                        Header="Messages"
+                                        x:Name="tabItemMessages">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=patientMessageUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientMessageUserControl
+                                            x:Name="patientMessageUserControl"
+                                            IsEdit="{Binding IsPatientMessageEdit, Mode=TwoWay}"
+                                            CurrentPatient="{Binding SelectedPatient, Mode=TwoWay}"
+                                            ParentViewModel="{Binding ThisDataContext}"
+                                            ItemsSource="{Binding SelectedPatient.PatientMessage, Mode=TwoWay}"
+                                            SortOrder="-Inactive|-MessageDateTime"
+                                            Model="{Binding PatientModel}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientMessageUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+
+                                    <VirtuosoCoreControls:EditTabItem
+                                        Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                        IsEdit="{Binding IsAdvancedDirectiveEdit, Mode=TwoWay}"
+                                        Header="Advance Directives"
+                                        x:Name="tabItemAdvancedDirectives">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=patientAdvancedDirectiveUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientAdvancedDirectiveUserControl
+                                            x:Name="patientAdvancedDirectiveUserControl"
+                                            IsEdit="{Binding IsAdvancedDirectiveEdit, Mode=TwoWay}"
+                                            CurrentPatient="{Binding SelectedPatient, Mode=TwoWay}"
+                                            ParentViewModel="{Binding ThisDataContext}"
+                                            ItemsSource="{Binding SelectedPatient.PatientAdvancedDirective, Mode=TwoWay}"
+                                            SortOrder="-CompletedDatePart"
+                                            Model="{Binding PatientModel}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientAdvancedDirectiveUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>
+
+                                    <VirtuosoCoreControls:EditTabItem
+                                        Visibility="{Binding SelectedPatient.PatientKey, Converter={StaticResource VisibilityConverterNullOrZeroOrNegative}, FallbackValue=Collapsed}"
+                                        IsEdit="{Binding IsAlternateIDEdit, Mode=TwoWay}"
+                                        Header="Alternate IDs"
+                                        x:Name="tabItemAlternateIDs">
+                                        <i:Interaction.Triggers>
+                                            <i:EventTrigger EventName="Loaded">
+                                                <VirtuosoUtility:SetFocusAction
+                                                    Target="{Binding ElementName=patientAlternateIDUserControl}">
+                                                </VirtuosoUtility:SetFocusAction>
+                                            </i:EventTrigger>
+                                        </i:Interaction.Triggers>
+                                        <VirtuosoMaintenanceControls:PatientAlternateIDUserControl
+                                            x:Name="patientAlternateIDUserControl"
+                                            IsEdit="{Binding IsAlternateIDEdit, Mode=TwoWay}"
+                                            CurrentPatient="{Binding SelectedPatient, Mode=TwoWay}"
+                                            ParentViewModel="{Binding ThisDataContext}"
+                                            ItemsSource="{Binding SelectedPatient.PatientAlternateID, Mode=TwoWay}"
+                                            SortOrder="-CompletedDatePart"
+                                            Model="{Binding PatientModel}">
+                                            <i:Interaction.Triggers>
+                                                <i:EventTrigger EventName="OKPressed">
+                                                    <i:InvokeCommandAction Command="{Binding OKCommand}" />
+                                                </i:EventTrigger>
+                                            </i:Interaction.Triggers>
+                                        </VirtuosoMaintenanceControls:PatientAlternateIDUserControl>
+                                    </VirtuosoCoreControls:EditTabItem>-->
+
+                                </sdk:TabControl>
+                            </Grid>
+                            <!--<VirtuosoCoreControls:DataSavedView />-->
+                        </Grid>
+                    </layoutToolkit:TransitioningContentControl.Content>
+
+                </layoutToolkit:TransitioningContentControl>
+                <layoutToolkit:TransitioningContentControl x:Name="popupContent"
+                                                           Grid.Row="2"
+                                                           Grid.Column="0"
+                                                           Visibility="Collapsed">
+                    <layoutToolkit:TransitioningContentControl.Content>
+                        <Grid x:Name="PopupRoot"
+                              HorizontalAlignment="Stretch"
+                              DataContext="{Binding PopupDataContext}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="*" />
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="*" />
+                            </Grid.RowDefinitions>
+                            <ContentPresenter Grid.Column="0"
+                                              Grid.Row="0"
+                                              Content="{Binding PopupDataTemplateLoaded, Mode=OneWay}"
+                                              x:Name="_PopupPresenter" />
+                        </Grid>
+                    </layoutToolkit:TransitioningContentControl.Content>
+
+                </layoutToolkit:TransitioningContentControl>
+                <CheckBox x:Name="isPopupVisible"
+                          Grid.Row="3"
+                          Grid.Column="0"
+                          IsChecked="{Binding IsPopupVisible, Mode=TwoWay}"
+                          Visibility="Collapsed"
+                          Checked="IsPopupVisible_Checked"
+                          Unchecked="IsPopupVisible_Unchecked" />
+            </Grid>
+        </VirtuosoCoreControls:VirtuosoBusyIndicator>
+    </Border>
+</coreview:PageBaseTab>

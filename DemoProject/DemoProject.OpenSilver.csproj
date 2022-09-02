@@ -17,11 +17,33 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="Patient\EditTabItem.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Patient\PatientDetailUserControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Patient\PatientList.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Patient\vLabel.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="App.xaml.cs" />
     <Compile Include="MainPage.xaml.cs" />
+    <Compile Include="Patient\codeLookup.cs" />
+    <Compile Include="Patient\EditTabItem.xaml.cs" />
+    <Compile Include="Patient\FocusHelper.cs" />
+    <Compile Include="Patient\PageBase.cs" />
+    <Compile Include="Patient\PatientDetailUserControl.xaml.cs" />
+    <Compile Include="Patient\PatientDetailUserControlBase.cs" />
+    <Compile Include="Patient\PatientList.xaml.cs" />
+    <Compile Include="Patient\vDatePicker.cs" />
+    <Compile Include="Patient\VirtuosoBusyIndicator.cs" />
+    <Compile Include="Patient\vLabel.xaml.cs" />
   </ItemGroup>
   
 </Project>

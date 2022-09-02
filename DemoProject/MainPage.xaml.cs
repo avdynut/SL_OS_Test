@@ -6,7 +6,16 @@ namespace DemoProject
     {
         public MainPage()
         {
-            InitializeComponent();
+            try
+            {
+                InitializeComponent();
+            }
+            catch (System.Exception ex)
+            {
+
+                throw;
+            }
+            
         }
     }
 }
