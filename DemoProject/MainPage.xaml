@@ -9,6 +9,20 @@
              mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Grid.Row="0"
+                Click="Button_Click"
+                Content="Load Collection"/>
+        <sdk:TabControl Grid.Row="1">
+            <sdk:TabItem Header="datagrid">
+                <sdk:DataGrid ItemsSource="{Binding TestCollection.View}"/>
+            </sdk:TabItem>
+            <sdk:TabItem Header="2">
+                <TextBlock Text="Hello!"/>
+            </sdk:TabItem>
+        </sdk:TabControl>
     </Grid>
 </UserControl>
