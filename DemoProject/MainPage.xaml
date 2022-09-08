@@ -9,6 +9,6 @@
              mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
+        <TextBlock Text="{Binding TestProperty}"/>
     </Grid>
 </UserControl>
