@@ -9,6 +9,23 @@
              mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
+        <ItemsControl ItemsSource="{Binding Items}">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
+        <ItemsControl ItemsSource="{Binding Items}" Visibility="Collapsed">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <RadioButton Checked="RadioButton_Checked"
+                                 Content="{Binding Name}"
+                                 GroupName="group"
+                                 IsChecked="{Binding IsChecked, Mode=TwoWay}"
+                                 Unchecked="RadioButton_Checked"/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+        </ItemsControl>
     </Grid>
 </UserControl>

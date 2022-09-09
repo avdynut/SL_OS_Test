@@ -1,16 +1,22 @@
 ﻿using DemoProject.ViewModels;
+using System.Diagnostics;
 using System.Windows.Controls;
 
 namespace DemoProject
 {
     public partial class MainPage : UserControl
     {
-        private readonly TestViewModel _viewModel = new TestViewModel();
+        private readonly Test _viewModel = new Test();
 
         public MainPage()
         {
             InitializeComponent();
             DataContext = _viewModel;
+        }
+
+        private void RadioButton_Checked(object sender, System.Windows.RoutedEventArgs e)
+        {
+            Trace.WriteLine($"RadioButton {sender} {e.OriginalSource}");
         }
     }
 }
