@@ -1,4 +1,5 @@
 ﻿using DemoProject.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace DemoProject
@@ -10,7 +11,13 @@ namespace DemoProject
         public MainPage()
         {
             InitializeComponent();
+
             DataContext = _viewModel;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            _viewModel.RaiseChanged();
         }
     }
 }

@@ -13,7 +13,10 @@
     </UserControl.Resources>
 
     <StackPanel x:Name="LayoutRoot" Background="White">
-        <!--<TextBlock Text="{Binding TestProperty}"/>-->
-        <TextBlock Text="{Binding TestProperty, Converter={StaticResource Converter}}"/>
+        <TextBlock Text="{Binding Number}"/>
+        <!--<TextBlock Text="{Binding Number, Converter={StaticResource Converter}}"/>-->
+        <TextBlock Text="{Binding Item.Value}"/>
+        <ContentPresenter Content="{Binding Control}"/>
+        <Button Click="Button_Click" Content="Raise"/>
     </StackPanel>
 </UserControl>
