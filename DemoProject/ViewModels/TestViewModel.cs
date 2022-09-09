@@ -8,7 +8,7 @@ namespace DemoProject.ViewModels
         private bool _isChecked;
         public bool IsChecked
         {
-            get => _isChecked;
+            get { return _isChecked; }
             set
             {
                 if (_isChecked != value)

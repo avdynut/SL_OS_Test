@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Compile Include="App.xaml.cs" />
+    <Compile Include="BooleanToVisibilityConverter.cs" />
     <Compile Include="MainPage.xaml.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
   </ItemGroup>

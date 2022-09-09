@@ -16,7 +16,7 @@ namespace DemoProject
 
         private void RadioButton_Checked(object sender, System.Windows.RoutedEventArgs e)
         {
-            Trace.WriteLine($"RadioButton {sender} {e.OriginalSource}");
+            Debug.WriteLine($"RadioButton {sender} {e.OriginalSource}");
         }
     }
 }
