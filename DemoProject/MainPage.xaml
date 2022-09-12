@@ -2,6 +2,7 @@
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+             xmlns:layoutToolkit="clr-namespace:System.Windows.Controls;assembly=System.Windows.Controls.Layout.Toolkit"
              xmlns:local="clr-namespace:DemoProject"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
@@ -13,10 +14,20 @@
     </UserControl.Resources>
 
     <StackPanel x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="{Binding Number}"/>
+        <!--<TextBlock Text="{Binding Number}"/>-->
         <!--<TextBlock Text="{Binding Number, Converter={StaticResource Converter}}"/>-->
-        <TextBlock Text="{Binding Item.Value}"/>
-        <ContentPresenter Content="{Binding Control}"/>
+        <!--<TextBlock Text="{Binding Item.Value}"/>-->
+        <!--<ContentPresenter Content="{Binding Control}"/>-->
+        <Grid DataContext="{Binding}">
+            <TextBlock Text="{Binding Item.Value}"/>
+        </Grid>
+        <!--<layoutToolkit:TransitioningContentControl>
+            <layoutToolkit:TransitioningContentControl.Content>
+                <Grid DataContext="{Binding Item}">
+                    <ContentPresenter Content="{Binding Control}"/>
+                </Grid>
+            </layoutToolkit:TransitioningContentControl.Content>
+        </layoutToolkit:TransitioningContentControl>-->
         <Button Click="Button_Click" Content="Raise"/>
     </StackPanel>
 </UserControl>
