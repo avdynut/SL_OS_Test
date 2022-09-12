@@ -18,5 +18,10 @@ namespace DemoProject
         {
             Debug.WriteLine($"RadioButton {sender} {e.OriginalSource}");
         }
+
+        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
+        {
+            Debug.WriteLine($"Text changed to {(sender as TextBox).Text}");
+        }
     }
 }

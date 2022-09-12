@@ -13,7 +13,7 @@
     </UserControl.Resources>
 
     <StackPanel x:Name="LayoutRoot" Background="White">
-        <ItemsControl ItemsSource="{Binding Items}">
+        <!--<ItemsControl ItemsSource="{Binding Items}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
@@ -31,6 +31,13 @@
                                  Unchecked="RadioButton_Checked"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-        </ItemsControl>
+        </ItemsControl>-->
+
+        <TextBox x:Name="text"/>
+        <CheckBox Name="textVisibleCheckbox" Content="TextBox visible"/>
+        <TextBox IsReadOnly="True"
+                 Text="{Binding ElementName=text, Path=Text}"
+                 TextChanged="TextBox_TextChanged"
+                 Visibility="{Binding ElementName=textVisibleCheckbox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
     </StackPanel>
 </UserControl>
