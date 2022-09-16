@@ -9,6 +9,36 @@
              mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
+        <Grid.Resources>
+            <HierarchicalDataTemplate x:Key="ItemTemplate2">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Level 3"/>
+                    <TextBlock Text="{Binding Number}"/>
+                </StackPanel>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate x:Key="ItemTemplate1"
+                                      ItemTemplate="{StaticResource ItemTemplate2}"
+                                      ItemsSource="{Binding ChildItems}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Level 2"/>
+                    <TextBlock Text="{Binding Number}"/>
+                </StackPanel>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate x:Key="ItemTemplate"
+                                      ItemTemplate="{StaticResource ItemTemplate1}"
+                                      ItemsSource="{Binding ChildItems}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Level 1"/>
+                    <TextBlock Text="{Binding Number}"/>
+                </StackPanel>
+            </HierarchicalDataTemplate>
+        </Grid.Resources>
+        <TreeView ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding Items}">
+            <TreeView.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <VirtualizingStackPanel/>
+                </ItemsPanelTemplate>
+            </TreeView.ItemsPanel>
+        </TreeView>
     </Grid>
 </UserControl>
