@@ -17,7 +17,7 @@ namespace DemoProject
 
             //Host.Settings.EnableOptimizationWhereCollapsedControlsAreNotLoaded = true;
             //Host.Settings.EnableBindingErrorsLogging = true;
-            Host.Settings.ProgressiveRenderingChunkSize = 10;
+            //Host.Settings.ProgressiveRenderingChunkSize = 10;
             //Host.Settings.EnablePerformanceLogging = true;
             //Host.Settings.EnableWebRequestsLogging = true;
             //Host.Settings.EnableInteropLogging = true;

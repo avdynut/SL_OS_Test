@@ -10,7 +10,31 @@
 
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.Resources>
-            <HierarchicalDataTemplate x:Key="ItemTemplate2">
+            <HierarchicalDataTemplate x:Key="ItemTemplate5">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Level 6"/>
+                    <TextBlock Text="{Binding Number}"/>
+                </StackPanel>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate x:Key="ItemTemplate4"
+                                      ItemTemplate="{StaticResource ItemTemplate5}"
+                                      ItemsSource="{Binding ChildItems}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Level 5"/>
+                    <TextBlock Text="{Binding Number}"/>
+                </StackPanel>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate x:Key="ItemTemplate3"
+                                      ItemTemplate="{StaticResource ItemTemplate4}"
+                                      ItemsSource="{Binding ChildItems}">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Level 4"/>
+                    <TextBlock Text="{Binding Number}"/>
+                </StackPanel>
+            </HierarchicalDataTemplate>
+            <HierarchicalDataTemplate x:Key="ItemTemplate2"
+                                      ItemTemplate="{StaticResource ItemTemplate3}"
+                                      ItemsSource="{Binding ChildItems}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Level 3"/>
                     <TextBlock Text="{Binding Number}"/>
@@ -33,12 +57,11 @@
                 </StackPanel>
             </HierarchicalDataTemplate>
         </Grid.Resources>
-        <TreeView ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding Items}">
-            <TreeView.ItemsPanel>
-                <ItemsPanelTemplate>
-                    <VirtualizingStackPanel/>
-                </ItemsPanelTemplate>
-            </TreeView.ItemsPanel>
-        </TreeView>
+        <TabControl>
+            <TabItem Header="Start screen"/>
+            <TabItem Header="TreeView">
+                <TreeView ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding Items}"/>
+            </TabItem>
+        </TabControl>
     </Grid>
 </UserControl>
