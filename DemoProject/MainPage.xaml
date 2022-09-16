@@ -13,7 +13,8 @@
     </UserControl.Resources>
 
     <StackPanel x:Name="LayoutRoot" Background="White">
-        <!--<ItemsControl ItemsSource="{Binding Items}">
+        <TextBlock Text="RadioButtons"/>
+        <ItemsControl ItemsSource="{Binding Items}">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <CheckBox Content="{Binding Name}" IsChecked="{Binding IsChecked, Mode=TwoWay}"/>
@@ -31,13 +32,26 @@
                                  Unchecked="RadioButton_Checked"/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
-        </ItemsControl>-->
+        </ItemsControl>
 
+        <TextBlock Margin="0,50,0,0" Text="TextBoxes"/>
         <TextBox x:Name="text"/>
         <CheckBox Name="textVisibleCheckbox" Content="TextBox visible"/>
         <TextBox IsReadOnly="True"
                  Text="{Binding ElementName=text, Path=Text}"
                  TextChanged="TextBox_TextChanged"
                  Visibility="{Binding ElementName=textVisibleCheckbox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <TextBlock Margin="0,50,0,0" Text="ItemsSource"/>
+        <TextBox x:Name="textItems"/>
+        <CheckBox Name="itemsVisibleCheckbox" Content="Items visible"/>
+        <ItemsControl Name="itemsControl"
+                      ItemsSource="{Binding ElementName=textItems, Path=Text}"
+                      Visibility="{Binding ElementName=itemsVisibleCheckbox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+
+        <TextBlock Margin="0,50,0,0" Text="ContentControl"/>
+        <Button x:Name="contentButton" Content="bb" Click="contentButton_Click"/>
+        <CheckBox Name="contentVisibleCheckbox" Content="ContentControl visible"/>
+        <ContentPresenter Name="contentControl" Content="{Binding ElementName=contentButton, Path=Content}" Visibility="{Binding ElementName=contentVisibleCheckbox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
     </StackPanel>
 </UserControl>
