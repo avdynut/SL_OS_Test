@@ -7,7 +7,27 @@ namespace DemoProject.ViewModels
     {
         public List<Item> Items { get; } = new List<Item>();
 
+        private bool _IncludeAllChildren;
+        public bool IncludeAllChildren
+        {
+            get { return _IncludeAllChildren; }
+            set
+            {
+                _IncludeAllChildren = value;
+
+                Items.ForEach(SetupIncludeAllChildren);
+
+                RaisePropertyChanged("IncludeAllChildren");
+                RaisePropertyChanged("Items");
+            }
+        }
+
         public TestViewModel()
+        {
+            CreateItems();
+        }
+
+        private void CreateItems()
         {
             for (int i = 0; i < 7; i++)
             {
@@ -46,17 +66,67 @@ namespace DemoProject.ViewModels
             }
         }
 
+        private void SetupIncludeAllChildren(Item sl)
+        {
+            //sl.IsExpanded = false;
+            //sl.ServiceLineGrouping?.ForEach(slg => slg.IsExpanded = false);
+
+            sl.IncludeAllChildren = IncludeAllChildren;
+            sl.ChildItems?.ForEach(slg => slg.IncludeAllChildren = IncludeAllChildren);
+
+            if (IncludeAllChildren)
+            {
+                //sl.IsExpanded = sl.SomeChildHasSelections;
+                //sl.ServiceLineGrouping?.ForEach(slg => slg.IsExpanded = slg.SomeChildHasSelections);
+            }
+            else
+            {
+                //sl.IsExpanded = true;
+                //sl.ServiceLineGrouping?.ForEach(slg => slg.IsExpanded = true);
+            }
+        }
+
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName)
+        private void RaisePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
-    public class Item
+    public class Item : INotifyPropertyChanged
     {
-        public List<Item> ChildItems { get; } = new List<Item>();
+        public static int NumberOfCalls;
+
+        private readonly List<Item> _childItems = new List<Item>();
+        public List<Item> ChildItems
+        {
+            get
+            {
+                NumberOfCalls++;
+                return _childItems;
+            }
+        }
+
         public int Number { get; set; }
+
+        private bool _IncludeAllChildren;
+        public bool IncludeAllChildren
+        {
+            get { return _IncludeAllChildren; }
+            set
+            {
+                _IncludeAllChildren = value;
+                RaisePropertyChanged("IncludeAllChildren");
+                RaisePropertyChanged("ChildItems");
+            }
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        private void RaisePropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
 }

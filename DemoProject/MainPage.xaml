@@ -10,58 +10,67 @@
 
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.Resources>
-            <HierarchicalDataTemplate x:Key="ItemTemplate5">
+            <Style TargetType="sdk:TreeViewItem">
+                <Setter Property="IsExpanded" Value="{Binding IncludeAllChildren}" />
+            </Style>
+            <sdk:HierarchicalDataTemplate x:Key="ItemTemplate5">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Level 6"/>
                     <TextBlock Text="{Binding Number}"/>
                 </StackPanel>
-            </HierarchicalDataTemplate>
-            <HierarchicalDataTemplate x:Key="ItemTemplate4"
+            </sdk:HierarchicalDataTemplate>
+            <sdk:HierarchicalDataTemplate x:Key="ItemTemplate4"
                                       ItemTemplate="{StaticResource ItemTemplate5}"
                                       ItemsSource="{Binding ChildItems}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Level 5"/>
                     <TextBlock Text="{Binding Number}"/>
                 </StackPanel>
-            </HierarchicalDataTemplate>
-            <HierarchicalDataTemplate x:Key="ItemTemplate3"
+            </sdk:HierarchicalDataTemplate>
+            <sdk:HierarchicalDataTemplate x:Key="ItemTemplate3"
                                       ItemTemplate="{StaticResource ItemTemplate4}"
                                       ItemsSource="{Binding ChildItems}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Level 4"/>
                     <TextBlock Text="{Binding Number}"/>
                 </StackPanel>
-            </HierarchicalDataTemplate>
-            <HierarchicalDataTemplate x:Key="ItemTemplate2"
+            </sdk:HierarchicalDataTemplate>
+            <sdk:HierarchicalDataTemplate x:Key="ItemTemplate2"
                                       ItemTemplate="{StaticResource ItemTemplate3}"
                                       ItemsSource="{Binding ChildItems}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Level 3"/>
                     <TextBlock Text="{Binding Number}"/>
                 </StackPanel>
-            </HierarchicalDataTemplate>
-            <HierarchicalDataTemplate x:Key="ItemTemplate1"
+            </sdk:HierarchicalDataTemplate>
+            <sdk:HierarchicalDataTemplate x:Key="ItemTemplate1"
                                       ItemTemplate="{StaticResource ItemTemplate2}"
                                       ItemsSource="{Binding ChildItems}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Level 2"/>
                     <TextBlock Text="{Binding Number}"/>
                 </StackPanel>
-            </HierarchicalDataTemplate>
-            <HierarchicalDataTemplate x:Key="ItemTemplate"
+            </sdk:HierarchicalDataTemplate>
+            <sdk:HierarchicalDataTemplate x:Key="ItemTemplate"
                                       ItemTemplate="{StaticResource ItemTemplate1}"
                                       ItemsSource="{Binding ChildItems}">
                 <StackPanel Orientation="Horizontal">
                     <TextBlock Text="Level 1"/>
                     <TextBlock Text="{Binding Number}"/>
                 </StackPanel>
-            </HierarchicalDataTemplate>
+            </sdk:HierarchicalDataTemplate>
         </Grid.Resources>
-        <TabControl>
-            <TabItem Header="Start screen"/>
-            <TabItem Header="TreeView">
-                <TreeView ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding Items}"/>
-            </TabItem>
-        </TabControl>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+        <sdk:TabControl>
+            <sdk:TabItem Header="Start screen"/>
+            <sdk:TabItem Header="TreeView">
+                <sdk:TreeView ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding Items}"/>
+            </sdk:TabItem>
+        </sdk:TabControl>
+        <CheckBox Grid.Row="1" Content="Raise events" Click="Button_Click" FontSize="24"/>
     </Grid>
 </UserControl>
