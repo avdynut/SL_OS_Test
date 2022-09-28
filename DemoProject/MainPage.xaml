@@ -42,16 +42,18 @@
                  TextChanged="TextBox_TextChanged"
                  Visibility="{Binding ElementName=textVisibleCheckbox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
 
-        <TextBlock Margin="0,50,0,0" Text="ItemsSource"/>
+        <!--ItemsControl works the same way as in Silverlight-->
+        <!--<TextBlock Margin="0,50,0,0" Text="ItemsSource"/>
         <TextBox x:Name="textItems"/>
         <CheckBox Name="itemsVisibleCheckbox" Content="Items visible"/>
         <ItemsControl Name="itemsControl"
                       ItemsSource="{Binding ElementName=textItems, Path=Text}"
-                      Visibility="{Binding ElementName=itemsVisibleCheckbox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+                      Visibility="{Binding ElementName=itemsVisibleCheckbox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
 
-        <TextBlock Margin="0,50,0,0" Text="ContentControl"/>
+        <!--ContentPresenter works the same way as in Silverlight-->
+        <!--<TextBlock Margin="0,50,0,0" Text="ContentControl"/>
         <Button x:Name="contentButton" Content="bb" Click="contentButton_Click"/>
         <CheckBox Name="contentVisibleCheckbox" Content="ContentControl visible"/>
-        <ContentPresenter Name="contentControl" Content="{Binding ElementName=contentButton, Path=Content}" Visibility="{Binding ElementName=contentVisibleCheckbox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>
+        <ContentPresenter Name="contentControl" Content="{Binding ElementName=contentButton, Path=Content}" Visibility="{Binding ElementName=contentVisibleCheckbox, Path=IsChecked, Converter={StaticResource BooleanToVisibilityConverter}}"/>-->
     </StackPanel>
 </UserControl>

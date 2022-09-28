@@ -13,7 +13,7 @@ namespace DemoProject
         {
             InitializeComponent();
             DataContext = _viewModel;
-            (itemsControl.Items as INotifyCollectionChanged).CollectionChanged += Items_CollectionChanged;
+            //(itemsControl.Items as INotifyCollectionChanged).CollectionChanged += Items_CollectionChanged;
         }
 
         private void RadioButton_Checked(object sender, System.Windows.RoutedEventArgs e)
@@ -26,14 +26,14 @@ namespace DemoProject
             Debug.WriteLine($"Text changed to {(sender as TextBox).Text}");
         }
 
-        private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
-        {
-            Debug.WriteLine($"Items count changed to {itemsControl.Items.Count}");
-        }
+        //private void Items_CollectionChanged(object sender, NotifyCollectionChangedEventArgs e)
+        //{
+        //    Debug.WriteLine($"Items count changed to {itemsControl.Items.Count}");
+        //}
 
-        private void contentButton_Click(object sender, System.Windows.RoutedEventArgs e)
-        {
-            Debug.WriteLine($"Content control {contentControl.Content}");
-        }
+        //private void contentButton_Click(object sender, System.Windows.RoutedEventArgs e)
+        //{
+        //    Debug.WriteLine($"Content control {contentControl.Content}");
+        //}
     }
 }
