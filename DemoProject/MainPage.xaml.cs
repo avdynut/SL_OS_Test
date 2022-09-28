@@ -16,15 +16,12 @@ namespace DemoProject
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            Debug.WriteLine($"NumberOfCalls {Item.NumberOfCalls}");
-            Item.NumberOfCalls = 0;
             var isChecked = (sender as CheckBox).IsChecked.Value;
+            _viewModel.IncludeAllChildren = isChecked;
+        }
 
-            for (int i = 0; i < 10000; i++)
-            {
-                _viewModel.IncludeAllChildren = isChecked;
-            }
-
+        private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
+        {
             Debug.WriteLine($"NumberOfCalls {Item.NumberOfCalls}");
         }
     }
