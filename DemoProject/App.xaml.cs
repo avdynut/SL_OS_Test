@@ -15,6 +15,7 @@ namespace DemoProject
             System.Diagnostics.Trace.Listeners.Add(new System.Diagnostics.TextWriterTraceListener(Console.Out));
             System.Diagnostics.Trace.AutoFlush = true;
 
+            Host.Settings.DataGridProgressiveLoadingChunkSize = 1;
             //Host.Settings.EnableOptimizationWhereCollapsedControlsAreNotLoaded = true;
             //Host.Settings.EnableBindingErrorsLogging = true;
             //Host.Settings.ProgressiveRenderingChunkSize = 10;

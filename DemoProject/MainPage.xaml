@@ -9,6 +9,16 @@
              mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <StackPanel HorizontalAlignment="Center" Orientation="Horizontal">
+            <TextBox x:Name="countText"
+                     MinWidth="50"
+                     Text="20"/>
+            <Button Click="Button_Click" Content="Load"/>
+        </StackPanel>
+        <DataGrid x:Name="datagrid" Grid.Row="1"/>
     </Grid>
 </UserControl>

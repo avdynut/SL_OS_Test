@@ -1,4 +1,5 @@
 ﻿using DemoProject.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace DemoProject
@@ -11,6 +12,21 @@ namespace DemoProject
         {
             InitializeComponent();
             DataContext = _viewModel;
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            int.TryParse(countText.Text, out int count);
+
+            datagrid.ItemsSource = null;
+            _viewModel.Items.Clear();
+            for (int i = 0; i < count; i++)
+            {
+                _viewModel.Items.Add(new Item { Number = i, Name = "Name ", Description = "descr" });
+            }
+            //_viewModel.OnPropertyChanged("Items");
+
+            datagrid.ItemsSource = _viewModel.Items;
         }
     }
 }

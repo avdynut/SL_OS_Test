@@ -22,4 +22,9 @@ public class UnmarshalledJavaScriptExecutionHandler : IJavaScriptExecutionHandle
     {
         return _runtime.InvokeUnmarshalled<string, object>(MethodName, javaScriptToExecute);
     }
+
+    public TResult InvokeUnmarshalled<T0, TResult>(string identifier, T0 arg0)
+    {
+        throw new System.NotImplementedException();
+    }
 }

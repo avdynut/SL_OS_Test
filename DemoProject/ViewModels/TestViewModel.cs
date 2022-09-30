@@ -1,18 +1,24 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace DemoProject.ViewModels
 {
     public class TestViewModel : INotifyPropertyChanged
     {
-        public TestViewModel()
-        {
-        }
+        public List<Item> Items { get; set; } = new List<Item>();
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void OnPropertyChanged(string propertyName)
+        public void OnPropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
+    }
+
+    public class Item
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Number { get; set; }
     }
 }
