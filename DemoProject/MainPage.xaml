@@ -7,8 +7,18 @@
              d:DesignHeight="300"
              d:DesignWidth="400"
              mc:Ignorable="d">
-
-    <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <ComboBox x:Name="alignmentCombobox"
+                  Grid.Row="0"
+                  SelectedIndex="0"/>
+        <ScrollViewer x:Name="scrollviewer"
+                      Grid.Row="1"
+                      VerticalAlignment="{Binding ElementName=alignmentCombobox, Path=SelectedValue}">
+            <StackPanel x:Name="panel"/>
+        </ScrollViewer>
     </Grid>
 </UserControl>
