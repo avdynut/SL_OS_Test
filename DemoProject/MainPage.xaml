@@ -284,9 +284,15 @@
         </Grid.RowDefinitions>
         <CheckBox x:Name="busyCheckbox" Content="IsBusy"/>
         <VirtuosoCoreControls:VirtuosoBusyIndicator Grid.Row="1"
-                                                    IsBusy="{Binding ElementName=busyCheckbox, Path=IsChecked}"
                                                     Style="{StaticResource CoreBusyIndicatorStyleDefault}">
             <Grid Background="Gray">
+                <VirtuosoCoreControls:VirtuosoBusyIndicator Grid.Row="1"
+                                                    IsBusy="{Binding ElementName=busyCheckbox, Path=IsChecked}"
+                                                    Style="{StaticResource CoreBusyIndicatorStyleDefault}">
+                    <Grid Background="Gray">
+                        <TextBlock Text="Content"/>
+                    </Grid>
+                </VirtuosoCoreControls:VirtuosoBusyIndicator>
                 <TextBlock Text="Content"/>
             </Grid>
         </VirtuosoCoreControls:VirtuosoBusyIndicator>
