@@ -6,57 +6,52 @@
              xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
              d:DesignHeight="300"
              d:DesignWidth="400"
+             FontSize="20"
              mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot" Background="White">
         <Grid.Resources>
             <Style TargetType="sdk:TreeViewItem">
-                <Setter Property="IsExpanded" Value="{Binding IncludeAllChildren}" />
+                <Setter Property="IsExpanded" Value="True"/>
             </Style>
             <sdk:HierarchicalDataTemplate x:Key="ItemTemplate5">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Level 6"/>
-                    <TextBlock Text="{Binding Number}"/>
+                    <TextBlock Text="{Binding Id}"/>
                 </StackPanel>
             </sdk:HierarchicalDataTemplate>
             <sdk:HierarchicalDataTemplate x:Key="ItemTemplate4"
-                                      ItemTemplate="{StaticResource ItemTemplate5}"
-                                      ItemsSource="{Binding ChildItems}">
+                                          ItemTemplate="{StaticResource ItemTemplate5}"
+                                          ItemsSource="{Binding ChildItems}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Level 5"/>
-                    <TextBlock Text="{Binding Number}"/>
+                    <TextBlock Text="{Binding Id}"/>
                 </StackPanel>
             </sdk:HierarchicalDataTemplate>
             <sdk:HierarchicalDataTemplate x:Key="ItemTemplate3"
-                                      ItemTemplate="{StaticResource ItemTemplate4}"
-                                      ItemsSource="{Binding ChildItems}">
+                                          ItemTemplate="{StaticResource ItemTemplate4}"
+                                          ItemsSource="{Binding ChildItems}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Level 4"/>
-                    <TextBlock Text="{Binding Number}"/>
+                    <TextBlock Text="{Binding Id}"/>
                 </StackPanel>
             </sdk:HierarchicalDataTemplate>
             <sdk:HierarchicalDataTemplate x:Key="ItemTemplate2"
-                                      ItemTemplate="{StaticResource ItemTemplate3}"
-                                      ItemsSource="{Binding ChildItems}">
+                                          ItemTemplate="{StaticResource ItemTemplate3}"
+                                          ItemsSource="{Binding ChildItems}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Level 3"/>
-                    <TextBlock Text="{Binding Number}"/>
+                    <TextBlock Text="{Binding Id}"/>
                 </StackPanel>
             </sdk:HierarchicalDataTemplate>
             <sdk:HierarchicalDataTemplate x:Key="ItemTemplate1"
-                                      ItemTemplate="{StaticResource ItemTemplate2}"
-                                      ItemsSource="{Binding ChildItems}">
+                                          ItemTemplate="{StaticResource ItemTemplate2}"
+                                          ItemsSource="{Binding ChildItems}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Level 2"/>
-                    <TextBlock Text="{Binding Number}"/>
+                    <TextBlock Text="{Binding Id}"/>
                 </StackPanel>
             </sdk:HierarchicalDataTemplate>
             <sdk:HierarchicalDataTemplate x:Key="ItemTemplate"
-                                      ItemTemplate="{StaticResource ItemTemplate1}"
-                                      ItemsSource="{Binding ChildItems}">
+                                          ItemTemplate="{StaticResource ItemTemplate1}"
+                                          ItemsSource="{Binding ChildItems}">
                 <StackPanel Orientation="Horizontal">
-                    <TextBlock Text="Level 1"/>
-                    <TextBlock Text="{Binding Number}"/>
+                    <TextBlock Text="{Binding Id}"/>
                 </StackPanel>
             </sdk:HierarchicalDataTemplate>
         </Grid.Resources>
@@ -64,14 +59,25 @@
             <RowDefinition Height="*"/>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
         </Grid.RowDefinitions>
         <sdk:TabControl>
             <sdk:TabItem Header="Start screen"/>
             <sdk:TabItem Header="TreeView" IsSelected="True">
-                <sdk:TreeView ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding Items}"/>
+                <sdk:TreeView ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding ServiceLineList}"/>
             </sdk:TabItem>
         </sdk:TabControl>
-        <CheckBox Grid.Row="1" Content="Raise events" Click="Button_Click" FontSize="24" HorizontalAlignment="Center"/>
-        <Button Grid.Row="2" Content="Number of calls" Click="Button_Click_1" FontSize="24" HorizontalAlignment="Center"/>
+        <CheckBox Grid.Row="1"
+                  HorizontalAlignment="Center"
+                  Click="Button_Click"
+                  Content="IncludeAllChildren"/>
+        <Button Grid.Row="2"
+                HorizontalAlignment="Center"
+                Click="Button_Click_2"
+                Content="RaisePropertyChanged"/>
+        <Button Grid.Row="3"
+                HorizontalAlignment="Center"
+                Click="Button_Click_1"
+                Content="Number of calls"/>
     </Grid>
 </UserControl>

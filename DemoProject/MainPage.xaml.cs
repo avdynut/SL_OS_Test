@@ -23,6 +23,12 @@ namespace DemoProject
         private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)
         {
             Debug.WriteLine($"NumberOfCalls {Item.NumberOfCalls}");
+            (sender as Button).Content = $"NumberOfCalls {Item.NumberOfCalls}";
+        }
+
+        private void Button_Click_2(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _viewModel.RaisePropertyChanged("ServiceLineList");
         }
     }
 }

@@ -1,12 +1,25 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel;
 using System.Diagnostics;
+using System.Linq;
 
 namespace DemoProject.ViewModels
 {
     public class TestViewModel : INotifyPropertyChanged
     {
-        public List<Item> Items { get; } = new List<Item>();
+        public List<Item> AllServiceLineList { get; } = new List<Item>();
+
+        public List<Item> ServiceLineList
+        {
+            get
+            {
+                if (IncludeAllChildren)
+                {
+                    return AllServiceLineList;
+                }
+                return AllServiceLineList.Where(x => x.Number % 2 == 0).ToList();
+            }
+        }
 
         private bool _IncludeAllChildren;
         public bool IncludeAllChildren
@@ -16,10 +29,10 @@ namespace DemoProject.ViewModels
             {
                 _IncludeAllChildren = value;
 
-                Items.ForEach(SetupIncludeAllChildren);
+                AllServiceLineList.ForEach(SetupIncludeAllChildren);
 
                 RaisePropertyChanged("IncludeAllChildren");
-                RaisePropertyChanged("Items");
+                RaisePropertyChanged("ServiceLineList");
             }
         }
 
@@ -31,39 +44,39 @@ namespace DemoProject.ViewModels
 
         private void CreateItems()
         {
-            for (int i = 0; i < 5; i++)
+            for (int i = 0; i < 2; i++)
             {
-                var item = new Item { Number = i };
-                Items.Add(item);
+                var item = new Item { Number = i, Id = $"{i}" };
+                AllServiceLineList.Add(item);
 
-                for (int j = 0; j < 1; j++)
+                for (int j = 0; j < 2; j++)
                 {
-                    var childItem = new Item { Number = j };
-                    item.ChildItems.Add(childItem);
+                    var childItem = new Item { Number = j, Id = $"{i}{j}" };
+                    item.AllChildItems.Add(childItem);
 
-                    //for (int k = 0; k < 1; k++)
-                    //{
-                    //    var subItem = new Item { Number = k };
-                    //    childItem.ChildItems.Add(subItem);
+                    for (int k = 0; k < 2; k++)
+                    {
+                        var subItem = new Item { Number = k, Id = $"{i}{j}{k}" };
+                        childItem.AllChildItems.Add(subItem);
 
-                    //    for (int l = 0; l < 1; l++)
-                    //    {
-                    //        var subItem2 = new Item { Number = l };
-                    //        subItem.ChildItems.Add(subItem2);
+                        for (int l = 0; l < 2; l++)
+                        {
+                            var subItem2 = new Item { Number = l, Id = $"{i}{j}{k}{l}" };
+                            subItem.AllChildItems.Add(subItem2);
 
-                    //        for (int m = 0; m < 2; m++)
-                    //        {
-                    //            var subItem3 = new Item { Number = m };
-                    //            subItem2.ChildItems.Add(subItem3);
+                            //for (int m = 0; m < 2; m++)
+                            //{
+                            //    var subItem3 = new Item { Number = m, Id = $"{i}{j}{k}{l}{m}" };
+                            //    subItem2.AllChildItems.Add(subItem3);
 
-                    //            for (int n = 0; n < 1; n++)
-                    //            {
-                    //                var subItem4 = new Item { Number = n };
-                    //                subItem3.ChildItems.Add(subItem4);
-                    //            }
-                    //        }
-                    //    }
-                    //}
+                            //    for (int n = 0; n < 2; n++)
+                            //    {
+                            //        var subItem4 = new Item { Number = n, Id = $"{i}{j}{k}{l}{m}{n}" };
+                            //        subItem3.AllChildItems.Add(subItem4);
+                            //    }
+                            //}
+                        }
+                    }
                 }
             }
         }
@@ -74,7 +87,7 @@ namespace DemoProject.ViewModels
             //sl.ServiceLineGrouping?.ForEach(slg => slg.IsExpanded = false);
 
             sl.IncludeAllChildren = IncludeAllChildren;
-            sl.ChildItems?.ForEach(slg => slg.IncludeAllChildren = IncludeAllChildren);
+            sl.AllChildItems?.ForEach(slg => slg.IncludeAllChildren = IncludeAllChildren);
 
             if (IncludeAllChildren)
             {
@@ -90,7 +103,7 @@ namespace DemoProject.ViewModels
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        private void RaisePropertyChanged(string propertyName)
+        public void RaisePropertyChanged(string propertyName)
         {
             PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
@@ -100,18 +113,25 @@ namespace DemoProject.ViewModels
     {
         public static int NumberOfCalls;
 
-        private readonly List<Item> _childItems = new List<Item>();
+        public List<Item> AllChildItems { get; } = new List<Item>();
+
         public List<Item> ChildItems
         {
             get
             {
                 NumberOfCalls++;
-                Debug.WriteLine($"get_ChildItems {new StackTrace()}");
-                return _childItems;
+                //Debug.WriteLine($"get_ChildItems {new StackTrace()}");
+
+                if (IncludeAllChildren)
+                {
+                    return AllChildItems;
+                }
+                return AllChildItems.Where(x => x.Number % 2 == 0).ToList();
             }
         }
 
         public int Number { get; set; }
+        public string Id { get; set; }
 
         private bool _IncludeAllChildren;
         public bool IncludeAllChildren
