@@ -9,6 +9,89 @@
              mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
+        <Grid.Resources>
+            <ControlTemplate x:Key="ToggleButtonTemplate" TargetType="ToggleButton">
+                <Grid Background="Transparent">
+                    <Path x:Name="CollapsedArrow"
+                          Width="5"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Data="F1 M 0,0 L 0,1 L .6,.5 L 0,0 Z"
+                          Stretch="Uniform"
+                          Stroke="#FF414345"
+                          Visibility="Collapsed"/>
+                    <Path x:Name="ExpandedArrow"
+                          Width="6"
+                          HorizontalAlignment="Center"
+                          VerticalAlignment="Center"
+                          Data="F1 M 0,1 L 1,1 L 1,0 L 0,1 Z"
+                          Fill="#FF414345"
+                          Stretch="Uniform"/>
+                    <VisualStateManager.VisualStateGroups>
+                        <VisualStateGroup x:Name="CommonStates">
+                            <VisualState x:Name="Normal"/>
+                            <VisualState x:Name="MouseOver">
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="CollapsedArrow"
+                                                    Storyboard.TargetProperty="(Stroke).Color"
+                                                    To="Blue"
+                                                    Duration="0"/>
+                                    <ColorAnimation Storyboard.TargetName="ExpandedArrow"
+                                                    Storyboard.TargetProperty="(Fill).Color"
+                                                    To="Blue"
+                                                    Duration="0"/>
+                                </Storyboard>
+                            </VisualState>
+                            <VisualState x:Name="Pressed">
+                                <Storyboard>
+                                    <ColorAnimation Storyboard.TargetName="CollapsedArrow"
+                                                    Storyboard.TargetProperty="(Stroke).Color"
+                                                    To="Blue"
+                                                    Duration="0"/>
+                                    <ColorAnimation Storyboard.TargetName="ExpandedArrow"
+                                                    Storyboard.TargetProperty="(Fill).Color"
+                                                    To="Blue"
+                                                    Duration="0"/>
+                                </Storyboard>
+                            </VisualState>
+                            <VisualState x:Name="Disabled">
+                                <Storyboard>
+                                    <DoubleAnimation Storyboard.TargetName="CollapsedArrow"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To=".5"
+                                                     Duration="0"/>
+                                    <DoubleAnimation Storyboard.TargetName="ExpandedArrow"
+                                                     Storyboard.TargetProperty="Opacity"
+                                                     To=".5"
+                                                     Duration="0"/>
+                                </Storyboard>
+                            </VisualState>
+                        </VisualStateGroup>
+                        <VisualStateGroup x:Name="CheckStates">
+                            <VisualState x:Name="Checked"/>
+                            <VisualState x:Name="Unchecked">
+                                <Storyboard>
+                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="CollapsedArrow"
+                                                                   Storyboard.TargetProperty="Visibility"
+                                                                   Duration="0">
+                                        <DiscreteObjectKeyFrame KeyTime="0" Value="Visible"/>
+                                    </ObjectAnimationUsingKeyFrames>
+                                    <ObjectAnimationUsingKeyFrames Storyboard.TargetName="ExpandedArrow"
+                                                                   Storyboard.TargetProperty="Visibility"
+                                                                   Duration="0">
+                                        <DiscreteObjectKeyFrame KeyTime="0" Value="Collapsed"/>
+                                    </ObjectAnimationUsingKeyFrames>
+                                </Storyboard>
+                            </VisualState>
+                        </VisualStateGroup>
+                    </VisualStateManager.VisualStateGroups>
+                </Grid>
+            </ControlTemplate>
+        </Grid.Resources>
+
+        <ToggleButton Name="ExpanderButton"
+                      Width="15"
+                      Height="15"
+                      Template="{StaticResource ToggleButtonTemplate}"/>
     </Grid>
 </UserControl>
