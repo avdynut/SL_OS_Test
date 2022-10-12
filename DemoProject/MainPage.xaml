@@ -19,6 +19,6 @@
                      Text="20"/>
             <Button Click="Button_Click" Content="Load"/>
         </StackPanel>
-        <DataGrid x:Name="datagrid" Grid.Row="1"/>
+        <sdk:DataGrid x:Name="datagrid" Grid.Row="1"/>
     </Grid>
 </UserControl>

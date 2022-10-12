@@ -16,7 +16,8 @@ namespace DemoProject
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            int.TryParse(countText.Text, out int count);
+            int count;
+            int.TryParse(countText.Text, out count);
 
             datagrid.ItemsSource = null;
             _viewModel.Items.Clear();
