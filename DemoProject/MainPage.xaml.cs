@@ -16,8 +16,11 @@ namespace DemoProject
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
+            var d = treeView.Parent as TabItem;
+            d.Content = null;
             var isChecked = (sender as CheckBox).IsChecked.Value;
             _viewModel.IncludeAllChildren = isChecked;
+            d.Content = treeView;
         }
 
         private void Button_Click_1(object sender, System.Windows.RoutedEventArgs e)

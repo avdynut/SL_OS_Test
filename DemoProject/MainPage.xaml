@@ -64,7 +64,7 @@
         <sdk:TabControl>
             <sdk:TabItem Header="Start screen"/>
             <sdk:TabItem Header="TreeView" IsSelected="True">
-                <sdk:TreeView ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding ServiceLineList}"/>
+                <sdk:TreeView ItemTemplate="{StaticResource ItemTemplate}" ItemsSource="{Binding ServiceLineList}" Name="treeView"/>
             </sdk:TabItem>
         </sdk:TabControl>
         <CheckBox Grid.Row="1"
