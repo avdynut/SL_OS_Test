@@ -16,14 +16,26 @@
 	<ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+	<Page Include="AdmissionEquipmentPopup.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
+	<Page Include="EquipmentOrderUserControl.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
     <Page Include="MainPage.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="ReEvaluatePopup.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="AdmissionEquipmentPopup.xaml.cs" />
     <Compile Include="App.xaml.cs" />
+    <Compile Include="EquipmentOrderUserControl.xaml.cs" />
     <Compile Include="MainPage.xaml.cs" />
+    <Compile Include="ReEvaluatePopup.xaml.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
   </ItemGroup>
   

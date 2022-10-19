@@ -1,0 +1,10 @@
+﻿<UserControl x:Class="DemoProject.AdmissionEquipmentPopup"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:local="clr-namespace:DemoProject">
+
+    <StackPanel>
+        <TextBlock Text="AdmissionEquipmentPopup"/>
+        <Button Click="Button_Click" Content="Cancel"/>
+    </StackPanel>
+</UserControl>

@@ -11,6 +11,7 @@ namespace DemoProject
         {
             InitializeComponent();
             DataContext = _viewModel;
+            _viewModel.PopupDataContext = new SignatureOrderEntry(_viewModel);
         }
     }
 }

@@ -9,6 +9,24 @@
              mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid x:Name="PopupRoot"
+              Grid.Row="1"
+              HorizontalAlignment="Stretch"
+              DataContext="{Binding PopupDataContext}">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <ContentPresenter Grid.Row="0"
+                              Grid.Column="0"
+                              Content="{Binding PopupDataTemplateLoaded, Mode=OneWay}"/>
+        </Grid>
     </Grid>
 </UserControl>
