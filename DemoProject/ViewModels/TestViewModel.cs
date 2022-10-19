@@ -62,8 +62,6 @@ namespace DemoProject.ViewModels
 
     public class SignatureOrderEntry
     {
-        public string PopupDataTemplate = "ReEvaluatePopupDataTemplate";
-
         private object _popupDataTemplateLoaded;
         public object PopupDataTemplateLoaded
         {
@@ -71,7 +69,7 @@ namespace DemoProject.ViewModels
             {
                 if (_popupDataTemplateLoaded == null)
                 {
-                    _popupDataTemplateLoaded = (Application.Current.Resources[PopupDataTemplate] as DataTemplate).LoadContent();
+                    _popupDataTemplateLoaded = new ReEvaluatePopup();
                 }
                 return _popupDataTemplateLoaded;
             }

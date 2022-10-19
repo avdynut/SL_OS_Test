@@ -20,8 +20,6 @@ namespace DemoProject
             _vm.ParentViewModel.PopupDataContext = this;
         }
 
-        public string PopupDataTemplate = "AdmissionEquipmentPopupDataTemplate";
-
         private object _popupDataTemplateLoaded;
         public object PopupDataTemplateLoaded
         {
@@ -29,7 +27,7 @@ namespace DemoProject
             {
                 if (_popupDataTemplateLoaded == null)
                 {
-                    _popupDataTemplateLoaded = (Application.Current.Resources[PopupDataTemplate] as DataTemplate).LoadContent();
+                    _popupDataTemplateLoaded = new AdmissionEquipmentPopup();
                 }
                 return _popupDataTemplateLoaded;
             }
