@@ -1,54 +1,20 @@
-﻿using System.Collections.Generic;
-using System.ComponentModel;
-using System.Linq;
+﻿using System.ComponentModel;
+using System.Diagnostics;
 using System.Windows;
+using System.Windows.Controls;
 
 namespace DemoProject.ViewModels
 {
     public class TestViewModel : INotifyPropertyChanged
     {
-        List<object> PopupDataContextStack = new List<object>();
-
         private object _PopupDataContext;
         public object PopupDataContext
         {
             get { return _PopupDataContext; }
             set
             {
-                if (value == null)
-                {
-                    if (PopupDataContextStack.Any())
-                    {
-                        _PopupDataContext = PopupDataContextStack.Last();
-                        PopupDataContextStack.Remove(_PopupDataContext);
-                    }
-                    else
-                    {
-                        _PopupDataContext = null;
-                    }
-
-                    OnPropertyChanged(nameof(PopupDataContext));
-                }
-                else
-                {
-                    if (PopupDataContextStack.Any() && (PopupDataContextStack.Contains(value)))
-                    {
-                        PopupDataContextStack.Remove(value); // backing up a level
-                    }
-                    else
-                    {
-                        if (_PopupDataContext != null)
-                        {
-                            PopupDataContextStack.Add(_PopupDataContext); // going down a level
-                        }
-                    }
-
-                    _PopupDataContext = value;
-                    Deployment.Current.Dispatcher.BeginInvoke(() =>
-                    {
-                        OnPropertyChanged(nameof(PopupDataContext));
-                    });
-                }
+                _PopupDataContext = value;
+                OnPropertyChanged(nameof(PopupDataContext));
             }
         }
 
@@ -60,26 +26,37 @@ namespace DemoProject.ViewModels
         }
     }
 
-    public class SignatureOrderEntry
+    public class Signature
     {
-        private object _popupDataTemplateLoaded;
-        public object PopupDataTemplateLoaded
+        public object PopupDataTemplateLoaded { get; }
+
+        public Signature()
         {
-            get
-            {
-                if (_popupDataTemplateLoaded == null)
-                {
-                    _popupDataTemplateLoaded = new ReEvaluatePopup();
-                }
-                return _popupDataTemplateLoaded;
-            }
+            var control = new TextBlock { Text = "Signature" };
+            control.DataContextChanged += OnDataContextChanged;
+            PopupDataTemplateLoaded = control;
         }
 
-        public TestViewModel ParentViewModel { get; set; }
-
-        public SignatureOrderEntry(TestViewModel parentVM)
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
         {
-            ParentViewModel = parentVM;
+            Debug.WriteLine($"Signature DataContextChanged to {e.NewValue ?? "null"} from {e.OldValue ?? "null"}");
+        }
+    }
+
+    public class Equipment
+    {
+        public object PopupDataTemplateLoaded { get; }
+
+        public Equipment()
+        {
+            var control = new TextBlock { Text = "Equipment" };
+            control.DataContextChanged += OnDataContextChanged;
+            PopupDataTemplateLoaded = control;
+        }
+
+        private void OnDataContextChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+            Debug.WriteLine($"Equipment DataContextChanged to {e.NewValue ?? "null"} from {e.OldValue ?? "null"}");
         }
     }
 }

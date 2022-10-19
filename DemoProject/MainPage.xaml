@@ -8,7 +8,13 @@
              d:DesignWidth="400"
              mc:Ignorable="d">
 
-    <Grid DataContext="{Binding PopupDataContext}">
-        <ContentPresenter Content="{Binding PopupDataTemplateLoaded}"/>
-    </Grid>
+    
+    <StackPanel>
+        <Button Content="DataContext 1" Click="Button_Click"/>
+        <Button Content="DataContext 2" Click="Button_Click_1"/>
+        <Grid DataContext="{Binding PopupDataContext}">
+            <ContentPresenter Content="{Binding PopupDataTemplateLoaded}"/>
+        </Grid>
+    </StackPanel>
+
 </UserControl>
