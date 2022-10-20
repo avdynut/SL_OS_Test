@@ -12,16 +12,20 @@
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        <ComboBox x:Name="alignmentCombobox"
-                  Grid.Row="0"
-                  SelectedIndex="0"/>
+        <StackPanel Grid.Row="0" Orientation="Horizontal">
+            <ComboBox x:Name="verticalAlignmentCombobox" SelectedIndex="0"/>
+            <ComboBox x:Name="horizontalAlignmentCombobox" SelectedIndex="0"/>
+        </StackPanel>
+
         <!--<ScrollViewer x:Name="scrollviewer"
                       Grid.Row="1"
-                      VerticalAlignment="{Binding ElementName=alignmentCombobox, Path=SelectedValue}">
+                      HorizontalAlignment="{Binding ElementName=horizontalAlignmentCombobox, Path=SelectedValue}"
+                      VerticalAlignment="{Binding ElementName=verticalAlignmentCombobox, Path=SelectedValue}">
             <StackPanel x:Name="panel"/>
         </ScrollViewer>-->
         <ListBox x:Name="listBox"
                  Grid.Row="1"
-                 VerticalAlignment="{Binding ElementName=alignmentCombobox, Path=SelectedValue}"/>
+                 HorizontalAlignment="{Binding ElementName=horizontalAlignmentCombobox, Path=SelectedValue}"
+                 VerticalAlignment="{Binding ElementName=verticalAlignmentCombobox, Path=SelectedValue}"/>
     </Grid>
 </UserControl>

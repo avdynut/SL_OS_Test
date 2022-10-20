@@ -19,11 +19,17 @@ namespace DemoProject
                 listBox.Items.Add(new Button { Content = "Button " + i });
             }
 
-            alignmentCombobox.Items.Add(VerticalAlignment.Stretch);
-            alignmentCombobox.Items.Add(VerticalAlignment.Top);
-            alignmentCombobox.Items.Add(VerticalAlignment.Center);
-            alignmentCombobox.Items.Add(VerticalAlignment.Bottom);
-            alignmentCombobox.SelectedIndex = 0;
+            verticalAlignmentCombobox.Items.Add(VerticalAlignment.Stretch);
+            verticalAlignmentCombobox.Items.Add(VerticalAlignment.Top);
+            verticalAlignmentCombobox.Items.Add(VerticalAlignment.Center);
+            verticalAlignmentCombobox.Items.Add(VerticalAlignment.Bottom);
+            verticalAlignmentCombobox.SelectedIndex = 0;
+
+            horizontalAlignmentCombobox.Items.Add(HorizontalAlignment.Stretch);
+            horizontalAlignmentCombobox.Items.Add(HorizontalAlignment.Left);
+            horizontalAlignmentCombobox.Items.Add(HorizontalAlignment.Center);
+            horizontalAlignmentCombobox.Items.Add(HorizontalAlignment.Right);
+            horizontalAlignmentCombobox.SelectedIndex = 0;
         }
     }
 }
