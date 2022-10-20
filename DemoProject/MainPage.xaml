@@ -15,10 +15,13 @@
         <ComboBox x:Name="alignmentCombobox"
                   Grid.Row="0"
                   SelectedIndex="0"/>
-        <ScrollViewer x:Name="scrollviewer"
+        <!--<ScrollViewer x:Name="scrollviewer"
                       Grid.Row="1"
                       VerticalAlignment="{Binding ElementName=alignmentCombobox, Path=SelectedValue}">
             <StackPanel x:Name="panel"/>
-        </ScrollViewer>
+        </ScrollViewer>-->
+        <ListBox x:Name="listBox"
+                 Grid.Row="1"
+                 VerticalAlignment="{Binding ElementName=alignmentCombobox, Path=SelectedValue}"/>
     </Grid>
 </UserControl>

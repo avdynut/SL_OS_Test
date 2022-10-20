@@ -15,7 +15,8 @@ namespace DemoProject
 
             for (int i = 0; i < 30; i++)
             {
-                panel.Children.Add(new Button { Content = "Button " + i });
+                //panel.Children.Add(new Button { Content = "Button " + i });
+                listBox.Items.Add(new Button { Content = "Button " + i });
             }
 
             alignmentCombobox.Items.Add(VerticalAlignment.Stretch);
