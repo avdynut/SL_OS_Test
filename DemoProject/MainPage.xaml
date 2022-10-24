@@ -17,6 +17,7 @@
         <VirtuosoCoreControls:DisciplineMultiSelectCombo Grid.Row="0"
                                                          Grid.Column="1"
                                                          Height="50"
+                                                         Width="300"
                                                          Margin="4"
                                                          DisplayMemberPath="Description"
                                                          IncludeAll="true"
