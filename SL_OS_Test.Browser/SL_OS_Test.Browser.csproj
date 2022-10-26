@@ -5,6 +5,8 @@
     <NoXamlPreprocessor>True</NoXamlPreprocessor>
     <OpenSilverType>4</OpenSilverType>
     <PublishTrimmed>true</PublishTrimmed>
+    <EnableTrimAnalyzer>true</EnableTrimAnalyzer>
+    <SuppressTrimAnalysisWarnings>false</SuppressTrimAnalysisWarnings>
     <!-- Uncomment to enable AOT compilation when publishing -->
     <!--<RunAOTCompilation>true</RunAOTCompilation>-->
   </PropertyGroup>

@@ -6,6 +6,7 @@ namespace DemoProject.ViewModels
     {
         public TestViewModel()
         {
+            var d = this.GetType().GetProperties();
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
