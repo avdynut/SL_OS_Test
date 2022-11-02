@@ -8,7 +8,8 @@
              d:DesignWidth="400"
              mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
-    </Grid>
+    <StackPanel x:Name="LayoutRoot" Background="White">
+        <TextBox Text="Hello!" Name="text"/>
+        <Button Content="click" Click="Button_Click"/>
+    </StackPanel>
 </UserControl>
