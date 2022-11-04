@@ -1,0 +1,34 @@
+﻿<UserControl x:Class="DemoProject.UserControl1"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk">
+
+    <!--EncounterSupplyUserControl.xaml-->
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Click="Button_Click_1" Content="add"/>
+        <sdk:DataGrid Grid.Row="1"
+                      HorizontalAlignment="Stretch"
+                      HorizontalContentAlignment="Stretch"
+                      AutoGenerateColumns="False"
+                      HeadersVisibility="All"
+                      ItemsSource="{Binding TestViewModel.Items, Mode=TwoWay}"
+                      SelectedItem="{Binding SelectedItem, Mode=TwoWay, ValidatesOnNotifyDataErrors=False}"
+                      SelectionChanged="DataGrid_SelectionChanged"
+                      VerticalScrollBarVisibility="Auto">
+            <sdk:DataGrid.Columns>
+                <sdk:DataGridTemplateColumn Header="Number">
+                    <sdk:DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <TextBlock Text="{Binding Number}"/>
+                        </DataTemplate>
+                    </sdk:DataGridTemplateColumn.CellTemplate>
+                </sdk:DataGridTemplateColumn>
+                <sdk:DataGridTextColumn Binding="{Binding Name}" Header="Name"/>
+            </sdk:DataGrid.Columns>
+        </sdk:DataGrid>
+    </Grid>
+</UserControl>

@@ -1,39 +1,36 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.ObjectModel;
 using System.ComponentModel;
-using System.Windows.Data;
+using System.Diagnostics;
 
 namespace DemoProject.ViewModels
 {
-    public class TestViewModel
+    public class TestViewModel : INotifyPropertyChanged
     {
-        public CollectionViewSource TestCollection { get; }
+        public ObservableCollection<Item> Items { get; set; } = new ObservableCollection<Item>();
 
         public TestViewModel()
         {
-            TestCollection = new CollectionViewSource();
-            TestCollection.SortDescriptions.Add(new SortDescription("Number", ListSortDirection.Ascending));
+            Items.CollectionChanged += _items_CollectionChanged;
         }
 
-        public void LoadCollection()
+        private void _items_CollectionChanged(object sender, System.Collections.Specialized.NotifyCollectionChangedEventArgs e)
         {
-            var random = new Random();
-            var max = 10;
+            Debug.WriteLine($"items collection changed {e.Action}");
+        }
 
-            var list = new List<Item>
-            {
-                new Item{ Name = "a", Number = random.Next(max) },
-                new Item{ Name = "b", Number = random.Next(max) },
-                new Item{ Name = "c", Number = random.Next(max) },
-            };
+        public event PropertyChangedEventHandler PropertyChanged;
 
-            TestCollection.Source = list;
+        public void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 
-    public class Item
+    public class Item : INotifyPropertyChanged
     {
         public int Number { get; set; }
         public string Name { get; set; }
+
+        public event PropertyChangedEventHandler PropertyChanged;
     }
 }

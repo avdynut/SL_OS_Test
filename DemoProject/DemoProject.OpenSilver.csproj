@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenSilver" Version="1.1.0-preview-2022-09-01-081955-f99255b1" />
+    <PackageReference Include="OpenSilver" Version="1.2.0-preview-2022-11-02-162054-c35e8ea5" />
   </ItemGroup>
 
   <ItemGroup>
@@ -19,11 +19,15 @@
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="UserControl1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
 
   <ItemGroup>
     <Compile Include="App.xaml.cs" />
     <Compile Include="MainPage.xaml.cs" />
+    <Compile Include="UserControl1.xaml.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
   </ItemGroup>
   
