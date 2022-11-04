@@ -7,7 +7,24 @@
              d:DesignHeight="300"
              d:DesignWidth="400"
              mc:Ignorable="d">
+    <UserControl.Resources>
+        <DataTemplate x:Key="UserDataTemplate">
+            <local:UserControl1 ItemsSource="{Binding TestViewModel.Items, Mode=TwoWay}" TestViewModel="{Binding TestViewModel, Mode=TwoWay}"/>
+        </DataTemplate>
+    </UserControl.Resources>
 
-    <local:UserControl1 TestViewModel="{Binding TestViewModel, Mode=TwoWay}"
-                        ItemsSource="{Binding TestViewModel.Items, Mode=TwoWay}" />
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <Button Click="Button_Click" Content="load"/>
+        <ContentControl x:Name="contentControl"
+                        Grid.Row="1"
+                        HorizontalAlignment="Stretch"
+                        VerticalAlignment="Stretch"
+                        HorizontalContentAlignment="Stretch"
+                        VerticalContentAlignment="Stretch"/>
+    </Grid>
+
 </UserControl>

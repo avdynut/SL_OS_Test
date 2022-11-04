@@ -1,4 +1,5 @@
 ﻿using DemoProject.ViewModels;
+using System.Windows;
 using System.Windows.Controls;
 
 namespace DemoProject
@@ -10,6 +11,13 @@ namespace DemoProject
         public MainPage()
         {
             InitializeComponent();
+        }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var datatemplate = Resources["UserDataTemplate"] as DataTemplate;
+            var content = datatemplate.LoadContent();
+            contentControl.Content = content;
             DataContext = this;
         }
     }
