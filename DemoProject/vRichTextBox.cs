@@ -5,75 +5,81 @@ using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Windows.Media;
+#else
+using Virtuoso.Core.Framework;
 #endif
 using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
-using Virtuoso.Core.Framework;
 
 namespace Virtuoso.Core.Controls
 {
 #if OPENSILVER
     public class vRichTextArea : HtmlPresenterEx
 #else
-    public class vRichTextArea : System.Windows.Controls.RichTextBox
+    public class vRichTextArea : RichTextBox
 #endif
     {
         public event EventHandler OnParagraphTextChanged;
 
         public string XamlError
         {
-            get { return ((string)(base.GetValue(Virtuoso.Core.Controls.vRichTextArea.XamlErrorProperty))); }
-            set { base.SetValue(Virtuoso.Core.Controls.vRichTextArea.XamlErrorProperty, value); }
+            get { return (string)GetValue(XamlErrorProperty); }
+            set { SetValue(XamlErrorProperty, value); }
         }
         public static DependencyProperty XamlErrorProperty =
-          DependencyProperty.Register("XamlError", typeof(string), typeof(Virtuoso.Core.Controls.vRichTextArea), null);
+          DependencyProperty.Register("XamlError", typeof(string), typeof(vRichTextArea), null);
 
         public bool DisplayMessageBoxOnError
         {
-            get { return ((bool)(base.GetValue(Virtuoso.Core.Controls.vRichTextArea.DisplayMessageBoxOnErrorProperty))); }
-            set { base.SetValue(Virtuoso.Core.Controls.vRichTextArea.DisplayMessageBoxOnErrorProperty, value); }
+            get { return (bool)GetValue(DisplayMessageBoxOnErrorProperty); }
+            set { SetValue(DisplayMessageBoxOnErrorProperty, value); }
         }
         public static DependencyProperty DisplayMessageBoxOnErrorProperty =
-          DependencyProperty.Register("DisplayMessageBoxOnError", typeof(bool), typeof(Virtuoso.Core.Controls.vRichTextArea), null);
+          DependencyProperty.Register("DisplayMessageBoxOnError", typeof(bool), typeof(vRichTextArea), null);
 
         public string ErrorXamlMessage { get; internal set; }
+
         public vRichTextArea(bool _displayMessageBoxOnError)
         {
             DisplayMessageBoxOnError = _displayMessageBoxOnError;
             init();
         }
+
         public vRichTextArea()
         {
             init();
         }
+
         void init()
         {
 #if OPENSILVER
-            try { this.Style = (Style)System.Windows.Application.Current.Resources["CoreHtmlPresenterStyle"]; }
+            try { this.Style = (Style)Application.Current.Resources["CoreHtmlPresenterStyle"]; }
             catch { }
 #else
             try { this.Style = (Style)System.Windows.Application.Current.Resources["CoreRichTextAreaStyle"]; }
             catch { }
+#endif
             this.IsReadOnly = true;
             this.IsTabStop = false;
-#endif
             this.ErrorXamlMessage = "<Section xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"><Paragraph>vRichTextArea.Xaml parse error</Paragraph></Section>";
             this.IsHitTestVisible = false;
         }
+
         public static DependencyProperty ParagraphTextProperty =
-          DependencyProperty.Register("ParagraphText", typeof(string), typeof(Virtuoso.Core.Controls.vRichTextArea),
+          DependencyProperty.Register("ParagraphText", typeof(string), typeof(vRichTextArea),
           new PropertyMetadata((o, e) =>
           {
-              ((Virtuoso.Core.Controls.vRichTextArea)o).SetXamlFromParagraphText();
+              ((vRichTextArea)o).SetXamlFromParagraphText();
           }));
 
         public string ParagraphText
         {
-            get { return ((string)(base.GetValue(Virtuoso.Core.Controls.vRichTextArea.ParagraphTextProperty))); }
-            set { base.SetValue(Virtuoso.Core.Controls.vRichTextArea.ParagraphTextProperty, value); }
+            get { return (string)GetValue(ParagraphTextProperty); }
+            set { SetValue(ParagraphTextProperty, value); }
         }
+
         private void SetXamlFromParagraphText()
         {
             string paragraphText = ParagraphText;
@@ -95,18 +101,22 @@ namespace Virtuoso.Core.Controls
             catch (Exception xamlParseError)
             {
                 this.XamlError = xamlParseError.Message;
-#if !OPENSILVER
+#if OPENSILVER
+                this.Html = $"vRichTextArea.Xaml parse error {xamlParseError}";
+#else
                 this.Xaml = this.ErrorXamlMessage;
 #endif
                 if (DisplayMessageBoxOnError)
                     MessageBox.Show(String.Format("Error vRichTextArea.SetXamlFromParagraphText: Parsing Xaml: {0}.  Contact your system administrator.", paragraphText));
             }
+
             Deployment.Current.Dispatcher.BeginInvoke(() =>
             {
                 if (OnParagraphTextChanged != null) OnParagraphTextChanged(this, EventArgs.Empty);
             });
         }
     }
+
 #if OPENSILVER
     public class HtmlPresenterEx : HtmlPresenter
     {
@@ -208,11 +218,11 @@ namespace Virtuoso.Core.Controls
             foreach (Setter setter in currentStyle.Setters)
             {
                 //setting properties only if they are not already set by control using inline properties
-                if (setter.Property == HtmlPresenterEx.ForegroundProperty && this.Foreground == null)
+                if (setter.Property == ForegroundProperty && this.Foreground == null)
                     AddPropertyToStyleDictionary("color", setter.Value.ToString());
-                else if (setter.Property == HtmlPresenterEx.FontSizeProperty && this.FontSize == 0)
+                else if (setter.Property == FontSizeProperty && this.FontSize == 0)
                     AddPropertyToStyleDictionary("font-size", this.FontSize);
-                else if (setter.Property == HtmlPresenterEx.FontFamilyProperty && this.FontFamily == null)
+                else if (setter.Property == FontFamilyProperty && this.FontFamily == null)
                     AddPropertyToStyleDictionary("font-family", this.FontFamily);
             }
         }
@@ -325,7 +335,7 @@ namespace Virtuoso.Core.Controls
 #else
     //this is a dummy class to resolve the issue of missing type in silverlight version
     //missing type exception is raised from style for HTMLPresenterEx from CoreStyles.xaml
-    public class HtmlPresenterEx : TextBox
+    public class HtmlPresenterEx : RichTextBox
     {
     }
 #endif
