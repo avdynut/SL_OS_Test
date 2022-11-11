@@ -30,7 +30,7 @@
             <Style BasedOn="{StaticResource CoreRichTextBoxStyle}" TargetType="RichTextBox"/>
 
             <Style x:Name="CoreHtmlPresenterStyle" TargetType="VirtuosoCoreControls:HtmlPresenterEx">
-                <Setter Property="Foreground" Value="{StaticResource HighlightBrush}"/>
+                <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
                 <Setter Property="FontFamily" Value="{StaticResource ContentFontFamily}"/>
                 <Setter Property="FontSize" Value="{StaticResource ContentFontSize}"/>
                 <Setter Property="Margin" Value="0,0,0,0"/>

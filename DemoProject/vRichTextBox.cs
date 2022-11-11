@@ -88,7 +88,7 @@ namespace Virtuoso.Core.Controls
             {
                 //FYI - US 4131 - added xml:space="preserve"
 #if OPENSILVER
-                this.Html = this.ProcessHtml(paragraphText);
+                this.SetHtmlContent(this.ProcessHtml(paragraphText));
 #else
                 this.Xaml = "<Section xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"><Paragraph xml:space=\"preserve\">" + paragraphText + "</Paragraph></Section>";
                 ScrollViewer sv = this.Descendents().OfType<ScrollViewer>().FirstOrDefault();
@@ -102,7 +102,7 @@ namespace Virtuoso.Core.Controls
             {
                 this.XamlError = xamlParseError.Message;
 #if OPENSILVER
-                this.Html = $"vRichTextArea.Xaml parse error {xamlParseError}";
+                this.SetHtmlContent($"vRichTextArea.Xaml parse error {xamlParseError}");
 #else
                 this.Xaml = this.ErrorXamlMessage;
 #endif
@@ -118,26 +118,9 @@ namespace Virtuoso.Core.Controls
     }
 
 #if OPENSILVER
-    public class HtmlPresenterEx : HtmlPresenter
+    public class HtmlPresenterEx : ContentControl
     {
-        public HtmlPresenterEx()
-        {
-            this.Loaded += HtmlPresenterEx_Loaded;
-        }
-
-        private void HtmlPresenterEx_Loaded(object sender, RoutedEventArgs e)
-        {
-            OpenSilver.Interop.ExecuteJavaScriptAsync("$0.style = 'overflow:hidden; padding:3px'", OpenSilver.Interop.GetDiv(this));
-        }
-
-        public bool IsTabStop
-        {
-            get { return (bool)GetValue(IsTabStopProperty); }
-            set { SetValue(IsTabStopProperty, value); }
-        }
-
-        public static readonly DependencyProperty IsTabStopProperty =
-            DependencyProperty.Register("IsTabStop", typeof(bool), typeof(HtmlPresenterEx), new PropertyMetadata(false));
+        private readonly HtmlPresenter _presenter = new HtmlPresenter();
 
         public bool IsReadOnly
         {
@@ -148,49 +131,26 @@ namespace Virtuoso.Core.Controls
         public static readonly DependencyProperty IsReadOnlyProperty =
             DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(HtmlPresenterEx), new PropertyMetadata(false));
 
-        public SolidColorBrush Foreground
-        {
-            get { return (SolidColorBrush)GetValue(ForegroundProperty); }
-            set { SetValue(ForegroundProperty, value); }
-        }
-
-        public static readonly DependencyProperty ForegroundProperty =
-            DependencyProperty.Register("Foreground", typeof(SolidColorBrush), typeof(HtmlPresenterEx), new PropertyMetadata(null));
-
-        public SolidColorBrush Background
-        {
-            get { return (SolidColorBrush)GetValue(BackgroundProperty); }
-            set { SetValue(BackgroundProperty, value); }
-        }
-
-        public static readonly DependencyProperty BackgroundProperty =
-            DependencyProperty.Register("Background", typeof(SolidColorBrush), typeof(HtmlPresenterEx), new PropertyMetadata(null));
-
-        public double FontSize
-        {
-            get { return (double)GetValue(FontSizeProperty); }
-            set { SetValue(FontSizeProperty, value); }
-        }
-
-        public static readonly DependencyProperty FontSizeProperty =
-            DependencyProperty.Register("FontSize", typeof(double), typeof(HtmlPresenterEx), new PropertyMetadata(0.0));
-
-        public FontFamily FontFamily
-        {
-            get { return (FontFamily)GetValue(FontFamilyProperty); }
-            set { SetValue(FontFamilyProperty, value); }
-        }
-
-        public static readonly DependencyProperty FontFamilyProperty =
-            DependencyProperty.Register("FontFamily", typeof(FontFamily), typeof(HtmlPresenterEx), new PropertyMetadata(null));
-
-        public HorizontalAlignment HorizontalContentAlignment { get; set; }
         public TextWrapping TextWrapping { get; set; }
         public TextAlignment TextAlignment { get; set; }
         public ScrollBarVisibility VerticalScrollBarVisibility { get; set; }
         public ScrollBarVisibility HorizontalScrollBarVisibility { get; set; }
-        public FontWeight FontWeight { get; set; }
-        public Thickness Padding { get; set; }
+
+        public HtmlPresenterEx()
+        {
+            //this.Loaded += HtmlPresenterEx_Loaded;
+        }
+
+        public void SetHtmlContent(string content)
+        {
+            _presenter.Html = content;
+            Content = _presenter;
+        }
+
+        //private void HtmlPresenterEx_Loaded(object sender, RoutedEventArgs e)
+        //{
+        //    OpenSilver.Interop.ExecuteJavaScriptAsync("$0.style = 'overflow:hidden; padding:3px'", OpenSilver.Interop.GetDiv(this));
+        //}
 
         private string GetHtmlStyleFromStyleDictionary()
         {
@@ -241,6 +201,7 @@ namespace Virtuoso.Core.Controls
         }
 
         Dictionary<string, string> _styleDictionary = new Dictionary<string, string>();
+
         public string ProcessHtml(string originalText)
         {
             if (string.IsNullOrWhiteSpace(originalText)) return "";
@@ -280,6 +241,7 @@ namespace Virtuoso.Core.Controls
             var result = plainText.ToString();
             return result;
         }
+
         private void ReadInlinePropertiesFromTags(IEnumerable<string> tags)
         {
             var expression = "(\\w+)=(\"[^<>\"]*\"|'[^<>']*'|\\w+)";
