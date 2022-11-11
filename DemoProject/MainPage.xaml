@@ -8,7 +8,35 @@
              d:DesignWidth="400"
              mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
-    </Grid>
+    <StackPanel x:Name="LayoutRoot" Background="White">
+        <TextBlock Text="Долгожданные гости" FontSize="18" FontFamily="Verdana"/>
+        <RichTextBox Name="richText" IsReadOnly="True">
+            <Paragraph FontFamily="Verdana"
+                       FontSize="22"
+                       FontWeight="Bold"
+                       FontStyle="Italic"
+                       Foreground="DarkRed"
+                       TextAlignment="Center">
+                Глава 1
+            </Paragraph>
+            <Paragraph TextAlignment="Center">
+                <LineBreak/>
+                <Bold>
+                    <Italic>
+                        <Run FontSize="18" FontFamily="Verdana" Foreground="DarkRed">Долгожданные гости</Run>
+                    </Italic>
+                </Bold>
+                <LineBreak/>
+            </Paragraph>
+            <Paragraph>
+                В Хоббитоне был переполох...<LineBreak/>
+            </Paragraph>
+            <Paragraph>
+                Но пока об оплате не было и речи...<LineBreak/>
+            </Paragraph>
+            <Paragraph>
+                Любимцем Бильбо...<LineBreak/>
+            </Paragraph>
+        </RichTextBox>
+    </StackPanel>
 </UserControl>
