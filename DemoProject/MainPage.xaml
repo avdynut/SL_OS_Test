@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="DemoProject.MainPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:VirtuosoCoreControls="clr-namespace:Virtuoso.Core.Controls"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
@@ -9,34 +10,11 @@
              mc:Ignorable="d">
 
     <StackPanel x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Долгожданные гости" FontSize="18" FontFamily="Verdana"/>
-        <RichTextBox Name="richText" IsReadOnly="True">
-            <Paragraph FontFamily="Verdana"
-                       FontSize="22"
-                       FontWeight="Bold"
-                       FontStyle="Italic"
-                       Foreground="DarkRed"
-                       TextAlignment="Center">
-                Глава 1
-            </Paragraph>
-            <Paragraph TextAlignment="Center">
-                <LineBreak/>
-                <Bold>
-                    <Italic>
-                        <Run FontSize="18" FontFamily="Verdana" Foreground="DarkRed">Долгожданные гости</Run>
-                    </Italic>
-                </Bold>
-                <LineBreak/>
-            </Paragraph>
-            <Paragraph>
-                В Хоббитоне был переполох...<LineBreak/>
-            </Paragraph>
-            <Paragraph>
-                Но пока об оплате не было и речи...<LineBreak/>
-            </Paragraph>
-            <Paragraph>
-                Любимцем Бильбо...<LineBreak/>
-            </Paragraph>
-        </RichTextBox>
+        <VirtuosoCoreControls:vRichTextArea Margin="0,0,0,8"
+                                            HorizontalAlignment="Center"
+                                            IsHitTestVisible="True"
+                                            ParagraphText="&lt;Bold&gt;M0100 - This Assessment is Currently Being Completed for the Following Reason:&lt;/Bold&gt;"
+                                            TextWrapping="Wrap"
+                                            VerticalScrollBarVisibility="Auto"/>
     </StackPanel>
 </UserControl>

@@ -1,7 +1,102 @@
 ﻿<Application x:Class="DemoProject.App"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
-             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml">
-    <Application.Resources>
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:VirtuosoCoreControls="clr-namespace:Virtuoso.Core.Controls"
+             xmlns:my="clr-namespace:System;assembly=mscorlib">
 
+    <Application.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Shades-300">#dfe2e7</Color>
+            <Color x:Key="Shades-900">#181b21</Color>
+            <Color x:Key="Primary-100">#d7e3fc</Color>
+            <Color x:Key="Primary-800">#0d2c6e</Color>
+            <SolidColorBrush x:Key="ListBoxBorder" Color="{StaticResource Shades-300}"/>
+            <SolidColorBrush x:Key="PrimaryText" Color="{StaticResource Shades-900}"/>
+            <SolidColorBrush x:Key="ItemSelected" Color="{StaticResource Primary-100}"/>
+            <SolidColorBrush x:Key="HighlightBrush" Color="{StaticResource Primary-800}"/>
+            <FontFamily x:Key="ContentFontFamily">Inter, Khmer UI, Arial</FontFamily>
+            <my:Double x:Key="ContentFontSize">14</my:Double>
+
+            <!--  RichTextBox Style  -->
+            <Style x:Name="CoreRichTextBoxStyle" TargetType="RichTextBox">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ContentFontFamily}"/>
+                <Setter Property="FontSize" Value="{StaticResource ContentFontSize}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0,0,0,0"/>
+            </Style>
+
+            <Style BasedOn="{StaticResource CoreRichTextBoxStyle}" TargetType="RichTextBox"/>
+
+            <Style x:Name="CoreHtmlPresenterStyle" TargetType="VirtuosoCoreControls:HtmlPresenterEx">
+                <Setter Property="Foreground" Value="{StaticResource HighlightBrush}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ContentFontFamily}"/>
+                <Setter Property="FontSize" Value="{StaticResource ContentFontSize}"/>
+                <Setter Property="Margin" Value="0,0,0,0"/>
+                <Setter Property="MinHeight" Value="26"/>
+                <Setter Property="Background" Value="{x:Null}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+            </Style>
+
+            <!--  Default style for System.Windows.Controls.RichTextBox  -->
+            <Style x:Name="CoreRichTextAreaStyle" TargetType="RichTextBox">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Background" Value="Transparent"/>
+                <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
+                <Setter Property="FontFamily" Value="{StaticResource ContentFontFamily}"/>
+                <Setter Property="FontSize" Value="{StaticResource ContentFontSize}"/>
+                <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0,0,0,0"/>
+                <Setter Property="Padding" Value="2"/>
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Offset="0" Color="#FFA3AEB9"/>
+                            <GradientStop Offset="0.375" Color="#FF8399A9"/>
+                            <GradientStop Offset="0.375" Color="#FF718597"/>
+                            <GradientStop Offset="1" Color="#FF617584"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
+                <Setter Property="Template">
+                    <Setter.Value>
+                        <ControlTemplate TargetType="RichTextBox">
+                            <Grid x:Name="RootElement">
+                                <Border x:Name="Border"
+                                        Background="Transparent"
+                                        BorderBrush="{TemplateBinding BorderBrush}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        CornerRadius="1"
+                                        Opacity="1">
+                                    <Border x:Name="MouseOverBorder"
+                                            Background="Transparent"
+                                            BorderBrush="Transparent"
+                                            BorderThickness="1">
+                                        <ScrollViewer x:Name="ContentElement"
+                                                      Padding="{TemplateBinding Padding}"
+                                                      Background="Transparent"
+                                                      BorderThickness="0"
+                                                      IsTabStop="False"/>
+                                    </Border>
+                                </Border>
+                                <Border x:Name="DisabledVisualElement"
+                                        Background="Transparent"
+                                        BorderBrush="{StaticResource ListBoxBorder}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        IsHitTestVisible="False"
+                                        Opacity="0"/>
+                                <Border x:Name="FocusVisualElement"
+                                        Margin="1"
+                                        BorderBrush="{StaticResource ItemSelected}"
+                                        BorderThickness="{TemplateBinding BorderThickness}"
+                                        IsHitTestVisible="False"
+                                        Opacity="0"/>
+                            </Grid>
+                        </ControlTemplate>
+                    </Setter.Value>
+                </Setter>
+            </Style>
+        </ResourceDictionary>
     </Application.Resources>
 </Application>

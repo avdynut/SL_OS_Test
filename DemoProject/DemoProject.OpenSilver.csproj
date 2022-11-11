@@ -25,6 +25,8 @@
     <Compile Include="App.xaml.cs" />
     <Compile Include="MainPage.xaml.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
+    <Compile Include="VisualTreeWalker.cs" />
+    <Compile Include="vRichTextBox.cs" />
   </ItemGroup>
   
 </Project>
