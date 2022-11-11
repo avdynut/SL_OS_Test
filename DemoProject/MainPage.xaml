@@ -9,11 +9,12 @@
              d:DesignWidth="400"
              mc:Ignorable="d">
 
-    <StackPanel x:Name="LayoutRoot" Background="White">
-        <VirtuosoCoreControls:vRichTextArea Margin="0,0,0,8"
+    <StackPanel x:Name="LayoutRoot" Background="Gray">
+        <VirtuosoCoreControls:vRichTextArea Margin="10"
+                                            Padding="20"
                                             HorizontalAlignment="Center"
-                                            IsHitTestVisible="True"
-                                            ParagraphText="&lt;Bold&gt;M0100 - This Assessment is Currently Being Completed for the Following Reason:&lt;/Bold&gt;"
+                                            IsHitTestVisible="True"                                            
+                                            ParagraphText="&lt;Bold Foreground=&quot;Blue&quot; FontSize=&quot;30&quot; FontFamily=&quot;Courier New&quot;&gt;M0100 - This Assessment is Currently Being Completed for the Following Reason:&lt;/Bold&gt;"
                                             TextWrapping="Wrap"
                                             VerticalScrollBarVisibility="Auto"/>
     </StackPanel>

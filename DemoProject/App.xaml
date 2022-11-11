@@ -30,13 +30,24 @@
             <Style BasedOn="{StaticResource CoreRichTextBoxStyle}" TargetType="RichTextBox"/>
 
             <Style x:Name="CoreHtmlPresenterStyle" TargetType="VirtuosoCoreControls:HtmlPresenterEx">
+                <Setter Property="BorderThickness" Value="0"/>
+                <Setter Property="Background" Value="Transparent"/>
                 <Setter Property="Foreground" Value="{StaticResource PrimaryText}"/>
                 <Setter Property="FontFamily" Value="{StaticResource ContentFontFamily}"/>
                 <Setter Property="FontSize" Value="{StaticResource ContentFontSize}"/>
-                <Setter Property="Margin" Value="0,0,0,0"/>
-                <Setter Property="MinHeight" Value="26"/>
-                <Setter Property="Background" Value="{x:Null}"/>
                 <Setter Property="VerticalAlignment" Value="Center"/>
+                <Setter Property="Margin" Value="0,0,0,0"/>
+                <Setter Property="Padding" Value="2"/>
+                <Setter Property="BorderBrush">
+                    <Setter.Value>
+                        <LinearGradientBrush StartPoint="0.5,0" EndPoint="0.5,1">
+                            <GradientStop Offset="0" Color="#FFA3AEB9"/>
+                            <GradientStop Offset="0.375" Color="#FF8399A9"/>
+                            <GradientStop Offset="0.375" Color="#FF718597"/>
+                            <GradientStop Offset="1" Color="#FF617584"/>
+                        </LinearGradientBrush>
+                    </Setter.Value>
+                </Setter>
             </Style>
 
             <!--  Default style for System.Windows.Controls.RichTextBox  -->

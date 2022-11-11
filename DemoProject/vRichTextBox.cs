@@ -1,10 +1,8 @@
 #if OPENSILVER
-using CSHTML5.Native.Html.Controls;
+using CSHTML5.Internal;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 using System.Text.RegularExpressions;
-using System.Windows.Media;
 #else
 using Virtuoso.Core.Framework;
 #endif
@@ -12,6 +10,7 @@ using System;
 using System.Linq;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Markup;
 
 namespace Virtuoso.Core.Controls
 {
@@ -55,13 +54,13 @@ namespace Virtuoso.Core.Controls
         void init()
         {
 #if OPENSILVER
-            try { this.Style = (Style)Application.Current.Resources["CoreHtmlPresenterStyle"]; }
+            try { this.Style = (Style)System.Windows.Application.Current.Resources["CoreHtmlPresenterStyle"]; }
             catch { }
 #else
             try { this.Style = (Style)System.Windows.Application.Current.Resources["CoreRichTextAreaStyle"]; }
             catch { }
-#endif
             this.IsReadOnly = true;
+#endif
             this.IsTabStop = false;
             this.ErrorXamlMessage = "<Section xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"><Paragraph>vRichTextArea.Xaml parse error</Paragraph></Section>";
             this.IsHitTestVisible = false;
@@ -88,7 +87,7 @@ namespace Virtuoso.Core.Controls
             {
                 //FYI - US 4131 - added xml:space="preserve"
 #if OPENSILVER
-                this.SetHtmlContent(this.ProcessHtml(paragraphText));
+                this.Html = this.ProcessHtml(paragraphText);
 #else
                 this.Xaml = "<Section xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"><Paragraph xml:space=\"preserve\">" + paragraphText + "</Paragraph></Section>";
                 ScrollViewer sv = this.Descendents().OfType<ScrollViewer>().FirstOrDefault();
@@ -102,7 +101,7 @@ namespace Virtuoso.Core.Controls
             {
                 this.XamlError = xamlParseError.Message;
 #if OPENSILVER
-                this.SetHtmlContent($"vRichTextArea.Xaml parse error {xamlParseError}");
+                this.Html = $"vRichTextArea.Xaml parse error {xamlParseError}";
 #else
                 this.Xaml = this.ErrorXamlMessage;
 #endif
@@ -118,9 +117,46 @@ namespace Virtuoso.Core.Controls
     }
 
 #if OPENSILVER
-    public class HtmlPresenterEx : ContentControl
+    [ContentProperty("Html")]
+    public class HtmlPresenterEx : Control
     {
-        private readonly HtmlPresenter _presenter = new HtmlPresenter();
+        private object _jsDiv;
+        private string _htmlContent;
+
+        public override object CreateDomElement(object parentRef, out object domElementWhereToPlaceChildren)
+        {
+            _jsDiv = INTERNAL_HtmlDomManager.CreateDomElementAndAppendIt("div", parentRef, this);
+            domElementWhereToPlaceChildren = _jsDiv;
+            return _jsDiv;
+        }
+
+        protected override void INTERNAL_OnAttachedToVisualTree()
+        {
+            base.INTERNAL_OnAttachedToVisualTree();
+
+            if (_htmlContent != null)
+            {
+                ApplyHtmlContent(_htmlContent);
+            }
+        }
+
+        public string Html
+        {
+            get => _htmlContent;
+            set
+            {
+                _htmlContent = value;
+                if (this.IsLoaded)
+                {
+                    ApplyHtmlContent(_htmlContent);
+                }
+            }
+        }
+
+        void ApplyHtmlContent(string htmlContent)
+        {
+            OpenSilver.Interop.ExecuteJavaScriptAsync($"$0.innerHTML = $1; $0.style.overflow = 'hidden';", _jsDiv, htmlContent);
+        }
 
         public bool IsReadOnly
         {
@@ -135,22 +171,6 @@ namespace Virtuoso.Core.Controls
         public TextAlignment TextAlignment { get; set; }
         public ScrollBarVisibility VerticalScrollBarVisibility { get; set; }
         public ScrollBarVisibility HorizontalScrollBarVisibility { get; set; }
-
-        public HtmlPresenterEx()
-        {
-            //this.Loaded += HtmlPresenterEx_Loaded;
-        }
-
-        public void SetHtmlContent(string content)
-        {
-            _presenter.Html = content;
-            Content = _presenter;
-        }
-
-        //private void HtmlPresenterEx_Loaded(object sender, RoutedEventArgs e)
-        //{
-        //    OpenSilver.Interop.ExecuteJavaScriptAsync("$0.style = 'overflow:hidden; padding:3px'", OpenSilver.Interop.GetDiv(this));
-        //}
 
         private string GetHtmlStyleFromStyleDictionary()
         {
@@ -169,22 +189,6 @@ namespace Virtuoso.Core.Controls
             var regex = new Regex(expression);
             var result = regex.Matches(originalText).Cast<Match>().Select(u => u.Value);
             return result;
-        }
-
-        private void SetPropertiesFromControlStyle()
-        {
-            Style currentStyle = this.Style as Style;
-
-            foreach (Setter setter in currentStyle.Setters)
-            {
-                //setting properties only if they are not already set by control using inline properties
-                if (setter.Property == ForegroundProperty && this.Foreground == null)
-                    AddPropertyToStyleDictionary("color", setter.Value.ToString());
-                else if (setter.Property == FontSizeProperty && this.FontSize == 0)
-                    AddPropertyToStyleDictionary("font-size", this.FontSize);
-                else if (setter.Property == FontFamilyProperty && this.FontFamily == null)
-                    AddPropertyToStyleDictionary("font-family", this.FontFamily);
-            }
         }
 
         private void AddPropertyToStyleDictionary(string property, object value)
@@ -206,20 +210,8 @@ namespace Virtuoso.Core.Controls
         {
             if (string.IsNullOrWhiteSpace(originalText)) return "";
             var tagsList = GetTagsList(originalText);
+            ReadInlinePropertiesFromTags(tagsList);
 
-            if (!_styleDictionary.Any()) //if once style is determine then it won't get processed again for this instance of rich text 
-            {
-                //by this point, if there are inline styles of properties they will be set to dependency properties
-                string foreground = this.Foreground.ToString();
-                if (foreground.StartsWith("#")) foreground = HexToColor(foreground);
-
-                AddPropertyToStyleDictionary("color", foreground);
-                AddPropertyToStyleDictionary("font-size", this.FontSize.ToString() + "px");
-                AddPropertyToStyleDictionary("font-family", this.FontFamily.ToString());
-
-                SetPropertiesFromControlStyle();
-                ReadInlinePropertiesFromTags(tagsList);
-            }
             string htmlStyle = GetHtmlStyleFromStyleDictionary();
             StringBuilder plainText = new StringBuilder(originalText);
 
@@ -253,8 +245,8 @@ namespace Virtuoso.Core.Controls
                     var values = match.ToString().Split('=');
                     if (values.Count() == 2)
                     {
-
-                        if (values.First() == "Foreground")
+                        var property = values.First();
+                        if (property == nameof(Foreground))
                         {
                             var colorText = values.Last().ToString();
                             if (colorText.Length >= 2 && (colorText[0] == '\'' || colorText[0] == '"') && colorText[0] == colorText[colorText.Length - 1])
@@ -268,7 +260,7 @@ namespace Virtuoso.Core.Controls
                             else
                                 AddPropertyToStyleDictionary("color", colorText);
                         }
-                        else if (values.First() == "FontSize")
+                        else if (property == nameof(FontSize))
                         {
                             string fontSize = values.Last().ToString();
                             if ((fontSize[0] == '\'' || fontSize[0] == '"') && fontSize[0] == fontSize[fontSize.Length - 1])
@@ -277,21 +269,32 @@ namespace Virtuoso.Core.Controls
                             }
                             AddPropertyToStyleDictionary("font-size", fontSize + "px");
                         }
+                        else if (property == nameof(FontFamily))
+                        {
+                            string fontFamily = values.Last().ToString();
+                            if ((fontFamily[0] == '\'' || fontFamily[0] == '"') && fontFamily[0] == fontFamily[fontFamily.Length - 1])
+                            {
+                                fontFamily = fontFamily.Substring(1, fontFamily.Length - 2);
+                            }
+                            AddPropertyToStyleDictionary("font-family", fontFamily);
+                        }
+                        else
+                        {
+                            System.Diagnostics.Debug.WriteLine($"Property {property} is not supported");
+                        }
                     }
                 }
             }
         }
 
-        public static string HexToColor(string colorCode)
+        public static string HexToColor(string hexARGB)
         {
-            if (string.IsNullOrWhiteSpace(colorCode)) return "";
-            colorCode = colorCode.TrimStart('#');
+            if (string.IsNullOrWhiteSpace(hexARGB))
+                return "";
 
-            byte a = (byte)int.Parse(colorCode.Substring(0, 2), NumberStyles.HexNumber);
-            byte r = (byte)int.Parse(colorCode.Substring(2, 2), NumberStyles.HexNumber);
-            byte g = (byte)int.Parse(colorCode.Substring(4, 2), NumberStyles.HexNumber);
-            byte b = (byte)int.Parse(colorCode.Substring(6, 2), NumberStyles.HexNumber);
-            return $"rgba({r},{g},{b},{a})";
+            // converting from C# ARGB to JS RGBA color
+            var jsColor = $"#{hexARGB.Substring(3, 6)}{hexARGB.Substring(1, 2)}";
+            return jsColor;
         }
     }
 #else
