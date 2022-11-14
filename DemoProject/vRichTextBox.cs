@@ -117,9 +117,14 @@ namespace Virtuoso.Core.Controls
     }
 
 #if OPENSILVER
+    /// <summary>
+    /// Implementation is taken from CSHTML5.Native.Html.Controls.HtmlPresenter.
+    /// We need the control to be inherited from Control class to support such properties as Foreground, FontSize, HorizontalAlignment and so on.
+    /// </summary>
     [ContentProperty("Html")]
     public class HtmlPresenterEx : Control
     {
+        #region HtmlPresenter
         private object _jsDiv;
         private string _htmlContent;
 
@@ -157,6 +162,7 @@ namespace Virtuoso.Core.Controls
         {
             OpenSilver.Interop.ExecuteJavaScriptAsync($"$0.innerHTML = $1; $0.style.overflow = 'hidden';", _jsDiv, htmlContent);
         }
+        #endregion
 
         public bool IsReadOnly
         {
@@ -172,11 +178,11 @@ namespace Virtuoso.Core.Controls
         public ScrollBarVisibility VerticalScrollBarVisibility { get; set; }
         public ScrollBarVisibility HorizontalScrollBarVisibility { get; set; }
 
-        private string GetHtmlStyleFromStyleDictionary()
+        private string GetHtmlStyleFromStyleDictionary(Dictionary<string, string> styles)
         {
             string htmlStyle = "";
-            if (_styleDictionary.Any()) htmlStyle = "style=";
-            foreach (var item in _styleDictionary)
+            if (styles.Any()) htmlStyle = "style=";
+            foreach (var item in styles)
             {
                 htmlStyle = $"{htmlStyle}{item.Key}:{item.Value};";
             }
@@ -191,38 +197,24 @@ namespace Virtuoso.Core.Controls
             return result;
         }
 
-        private void AddPropertyToStyleDictionary(string property, object value)
-        {
-            if (string.IsNullOrWhiteSpace(value.ToString())) return;
-            if (_styleDictionary.ContainsKey(property))
-            {
-                _styleDictionary[property] = value.ToString();
-            }
-            else
-            {
-                _styleDictionary.Add(property, value.ToString());
-            }
-        }
-
-        Dictionary<string, string> _styleDictionary = new Dictionary<string, string>();
-
         public string ProcessHtml(string originalText)
         {
             if (string.IsNullOrWhiteSpace(originalText)) return "";
             var tagsList = GetTagsList(originalText);
-            ReadInlinePropertiesFromTags(tagsList);
-
-            string htmlStyle = GetHtmlStyleFromStyleDictionary();
-            StringBuilder plainText = new StringBuilder(originalText);
+            var plainText = new StringBuilder(originalText);
 
             foreach (var tag in tagsList)
             {
+                var styles = ReadInlinePropertiesFromTag(tag);
+                string htmlStyle = GetHtmlStyleFromStyleDictionary(styles);
+
                 //notice how we are not closing any tag like <Bold, to handle the situation of inline styles in these tags
                 if (tag.StartsWith("<Bold")) plainText.Replace(tag, $"<b {htmlStyle}>");
                 if (tag.StartsWith("<Underline")) plainText.Replace(tag, $"<u {htmlStyle}>");
                 if (tag.StartsWith("<Italic")) plainText.Replace(tag, $"<i {htmlStyle}>");
                 if (tag.StartsWith("<Run")) plainText.Replace(tag, $"<span {htmlStyle}>");
             }
+
             //all closing tags here, for them simple string replacement will work
             plainText.Replace("</Bold>", $"</b>");
             plainText.Replace("</Underline>", "</u>");
@@ -234,66 +226,72 @@ namespace Virtuoso.Core.Controls
             return result;
         }
 
-        private void ReadInlinePropertiesFromTags(IEnumerable<string> tags)
+        private Dictionary<string, string> ReadInlinePropertiesFromTag(string tag)
         {
-            var expression = "(\\w+)=(\"[^<>\"]*\"|'[^<>']*'|\\w+)";
-            foreach (var tag in tags)
+            const string expression = "(\\w+)=(\"[^<>\"]*\"|'[^<>']*'|\\w+)";
+            var styles = new Dictionary<string, string>();
+            var matches = Regex.Matches(tag, expression);
+
+            foreach (var match in matches)
             {
-                var matches = Regex.Matches(tag, expression);
-                foreach (var match in matches)
+                var values = match.ToString().Split('=');
+                if (values.Count() == 2)
                 {
-                    var values = match.ToString().Split('=');
-                    if (values.Count() == 2)
+                    var property = values.First();
+                    if (property == nameof(Foreground))
                     {
-                        var property = values.First();
-                        if (property == nameof(Foreground))
+                        var colorText = values.Last().ToString();
+                        if (colorText.Length >= 2 && (colorText[0] == '\'' || colorText[0] == '"') && colorText[0] == colorText[colorText.Length - 1])
                         {
-                            var colorText = values.Last().ToString();
-                            if (colorText.Length >= 2 && (colorText[0] == '\'' || colorText[0] == '"') && colorText[0] == colorText[colorText.Length - 1])
-                            {
-                                string colorName = colorText.Substring(1, colorText.Length - 2);
-                                if (colorName.StartsWith("#"))
-                                    AddPropertyToStyleDictionary("color", HexToColor(colorName));
-                                else
-                                    AddPropertyToStyleDictionary("color", colorName);
-                            }
+                            string colorName = colorText.Substring(1, colorText.Length - 2);
+                            if (colorName.StartsWith("#"))
+                                styles["color"] = HexToColor(colorName);
                             else
-                                AddPropertyToStyleDictionary("color", colorText);
-                        }
-                        else if (property == nameof(FontSize))
-                        {
-                            string fontSize = values.Last().ToString();
-                            if ((fontSize[0] == '\'' || fontSize[0] == '"') && fontSize[0] == fontSize[fontSize.Length - 1])
-                            {
-                                fontSize = fontSize.Substring(1, fontSize.Length - 2);
-                            }
-                            AddPropertyToStyleDictionary("font-size", fontSize + "px");
-                        }
-                        else if (property == nameof(FontFamily))
-                        {
-                            string fontFamily = values.Last().ToString();
-                            if ((fontFamily[0] == '\'' || fontFamily[0] == '"') && fontFamily[0] == fontFamily[fontFamily.Length - 1])
-                            {
-                                fontFamily = fontFamily.Substring(1, fontFamily.Length - 2);
-                            }
-                            AddPropertyToStyleDictionary("font-family", fontFamily);
+                                styles["color"] = colorName;
                         }
                         else
+                            styles["color"] = colorText;
+                    }
+                    else if (property == nameof(FontSize))
+                    {
+                        string fontSize = values.Last().ToString();
+                        if ((fontSize[0] == '\'' || fontSize[0] == '"') && fontSize[0] == fontSize[fontSize.Length - 1])
                         {
-                            System.Diagnostics.Debug.WriteLine($"Property {property} is not supported");
+                            fontSize = fontSize.Substring(1, fontSize.Length - 2);
                         }
+                        styles["font-size"] = fontSize + "px";
+                    }
+                    else if (property == nameof(FontFamily))
+                    {
+                        string fontFamily = values.Last().ToString();
+                        if ((fontFamily[0] == '\'' || fontFamily[0] == '"') && fontFamily[0] == fontFamily[fontFamily.Length - 1])
+                        {
+                            fontFamily = fontFamily.Substring(1, fontFamily.Length - 2);
+                        }
+                        styles["font-family"] = fontFamily;
+                    }
+                    else
+                    {
+                        System.Diagnostics.Debug.WriteLine($"Property {property} is not supported");
                     }
                 }
             }
+
+            return styles;
         }
 
-        public static string HexToColor(string hexARGB)
+        public static string HexToColor(string hexColor)
         {
-            if (string.IsNullOrWhiteSpace(hexARGB))
+            if (string.IsNullOrWhiteSpace(hexColor))
                 return "";
 
+            if (hexColor.Length == 7) // opacity is not specified
+            {
+                return hexColor;
+            }
+
             // converting from C# ARGB to JS RGBA color
-            var jsColor = $"#{hexARGB.Substring(3, 6)}{hexARGB.Substring(1, 2)}";
+            var jsColor = $"#{hexColor.Substring(3, 6)}{hexColor.Substring(1, 2)}";
             return jsColor;
         }
     }
