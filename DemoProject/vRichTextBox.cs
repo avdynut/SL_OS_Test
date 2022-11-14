@@ -1,5 +1,6 @@
 #if OPENSILVER
 using CSHTML5.Internal;
+using OpenSilver;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Text;
@@ -132,6 +133,7 @@ namespace Virtuoso.Core.Controls
         {
             _jsDiv = INTERNAL_HtmlDomManager.CreateDomElementAndAppendIt("div", parentRef, this);
             domElementWhereToPlaceChildren = _jsDiv;
+            Interop.ExecuteJavaScriptAsync($"$0.style.overflow = 'hidden'", parentRef);
             return _jsDiv;
         }
 
@@ -160,7 +162,7 @@ namespace Virtuoso.Core.Controls
 
         void ApplyHtmlContent(string htmlContent)
         {
-            OpenSilver.Interop.ExecuteJavaScriptAsync($"$0.innerHTML = $1; $0.style.overflow = 'hidden';", _jsDiv, htmlContent);
+            Interop.ExecuteJavaScriptAsync($"$0.innerHTML = $1", _jsDiv, htmlContent);
         }
     }
 
@@ -199,20 +201,20 @@ namespace Virtuoso.Core.Controls
         }
 
         public static readonly DependencyProperty TextAlignmentProperty =
-            DependencyProperty.Register(nameof(TextAlignment), typeof(TextAlignment), typeof(HtmlPresenterEx), new PropertyMetadata(TextAlignment.Left));
+            DependencyProperty.Register(nameof(TextAlignment), typeof(TextAlignment), typeof(HtmlPresenterEx),
+                new PropertyMetadata(TextAlignment.Left) { MethodToUpdateDom = TextAlignment_MethodToUpdateDom });
 
-        // TODO: Figure out if we need to implement this property. Because there are some Center values across the project, instead of default Left. 
+        static void TextAlignment_MethodToUpdateDom(DependencyObject d, object newValue)
+        {
+            var control = (HtmlPresenterEx)d;
+            string alignment = ((TextAlignment)newValue).ToString().ToLower();
+            INTERNAL_HtmlDomManager.GetFrameworkElementOuterStyleForModification(control).textAlign = alignment;
+        }
+
         public TextAlignment TextAlignment
         {
             get => (TextAlignment)GetValue(TextAlignmentProperty);
-            set
-            {
-                if (value != TextAlignment.Left)
-                {
-                    Debug.WriteLine($"RichTextBoxReadOnly: TextAlignment {value} is not supported.");
-                }
-                SetValue(TextAlignmentProperty, value);
-            }
+            set => SetValue(TextAlignmentProperty, value);
         }
 
         public static readonly DependencyProperty TextWrappingProperty =
@@ -284,15 +286,14 @@ namespace Virtuoso.Core.Controls
             plainText.Replace("</Underline>", "</u>");
             plainText.Replace("</Italic>", "</i>");
             plainText.Replace("</Run>", "</span>");
-            plainText.Replace("<LineBreak/>", "<br/>");
+            plainText.Replace("<LineBreak", "<br");
 
-            var result = plainText.ToString();
-            return result;
+            return plainText.ToString();
         }
 
         private IEnumerable<string> GetTagsList(string originalText)
         {
-            var expression = "<(“[^”]*”|'[^’]*’|[^'”>])*>";
+            const string expression = "<(“[^”]*”|'[^’]*’|[^'”>])*>";
             var regex = new Regex(expression);
             var result = regex.Matches(originalText).Cast<Match>().Select(u => u.Value);
             return result;
@@ -355,11 +356,12 @@ namespace Virtuoso.Core.Controls
         private string GetHtmlStyleFromStyleDictionary(Dictionary<string, string> styles)
         {
             string htmlStyle = "";
-            if (styles.Any()) htmlStyle = "style=";
             foreach (var item in styles)
             {
                 htmlStyle = $"{htmlStyle}{item.Key}:{item.Value};";
             }
+
+            if (styles.Any()) htmlStyle = $"style=\"{htmlStyle}\"";
             return htmlStyle;
         }
 
@@ -374,7 +376,7 @@ namespace Virtuoso.Core.Controls
             }
 
             // converting from C# ARGB to JS RGBA color
-            var jsColor = $"#{hexColor.Substring(3, 6)}{hexColor.Substring(1, 2)}";
+            string jsColor = $"#{hexColor.Substring(3, 6)}{hexColor.Substring(1, 2)}";
             return jsColor;
         }
     }

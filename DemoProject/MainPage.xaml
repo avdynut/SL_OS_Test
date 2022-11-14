@@ -14,7 +14,7 @@
                                             Padding="20"
                                             HorizontalAlignment="Center"
                                             IsHitTestVisible="True"                                            
-                                            ParagraphText="&lt;Italic Foreground=&quot;#eb4034&quot;&gt;Text&lt;/Italic&gt;&lt;LineBreak/&gt;&lt;Bold Foreground=&quot;Blue&quot; FontSize=&quot;30&quot; FontFamily=&quot;Courier New&quot;&gt;M0100 - This Assessment is Currently Being Completed for the Following Reason:&lt;/Bold&gt;"
+                                            ParagraphText="&lt;Italic Foreground=&quot;#eb4034&quot;&gt;Text&lt;/Italic&gt;&lt;LineBreak /&gt;&lt;Bold Foreground=&quot;Blue&quot; FontSize=&quot;30&quot; FontFamily=&quot;Courier New&quot;&gt;M0100 - This Assessment is Currently Being Completed for the Following Reason:&lt;/Bold&gt;"
                                             TextWrapping="Wrap"
                                             VerticalScrollBarVisibility="Auto"/>
     </StackPanel>
