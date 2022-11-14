@@ -1,6 +1,7 @@
 #if OPENSILVER
 using CSHTML5.Internal;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Text.RegularExpressions;
 #else
@@ -15,7 +16,7 @@ using System.Windows.Markup;
 namespace Virtuoso.Core.Controls
 {
 #if OPENSILVER
-    public class vRichTextArea : HtmlPresenterEx
+    public class vRichTextArea : RichTextBoxReadOnly
 #else
     public class vRichTextArea : RichTextBox
 #endif
@@ -87,7 +88,7 @@ namespace Virtuoso.Core.Controls
             {
                 //FYI - US 4131 - added xml:space="preserve"
 #if OPENSILVER
-                this.Html = this.ProcessHtml(paragraphText);
+                this.Xaml = paragraphText;
 #else
                 this.Xaml = "<Section xmlns=\"http://schemas.microsoft.com/winfx/2006/xaml/presentation\"><Paragraph xml:space=\"preserve\">" + paragraphText + "</Paragraph></Section>";
                 ScrollViewer sv = this.Descendents().OfType<ScrollViewer>().FirstOrDefault();
@@ -124,7 +125,6 @@ namespace Virtuoso.Core.Controls
     [ContentProperty("Html")]
     public class HtmlPresenterEx : Control
     {
-        #region HtmlPresenter
         private object _jsDiv;
         private string _htmlContent;
 
@@ -162,42 +162,106 @@ namespace Virtuoso.Core.Controls
         {
             OpenSilver.Interop.ExecuteJavaScriptAsync($"$0.innerHTML = $1; $0.style.overflow = 'hidden';", _jsDiv, htmlContent);
         }
-        #endregion
+    }
 
-        public bool IsReadOnly
+    /// <summary>
+    /// Lite implementation of readonly RichTextBox without scrolling.
+    /// </summary>
+    public class RichTextBoxReadOnly : HtmlPresenterEx
+    {
+        #region Properties
+        private string _xamlString;
+        public string Xaml
         {
-            get { return (bool)GetValue(IsReadOnlyProperty); }
-            set { SetValue(IsReadOnlyProperty, value); }
+            get => _xamlString;
+            set
+            {
+                _xamlString = value;
+                this.Html = ProcessHtml(_xamlString);
+            }
         }
 
         public static readonly DependencyProperty IsReadOnlyProperty =
-            DependencyProperty.Register("IsReadOnly", typeof(bool), typeof(HtmlPresenterEx), new PropertyMetadata(false));
+            DependencyProperty.Register(nameof(IsReadOnly), typeof(bool), typeof(HtmlPresenterEx), new PropertyMetadata(true));
 
-        public TextWrapping TextWrapping { get; set; }
-        public TextAlignment TextAlignment { get; set; }
-        public ScrollBarVisibility VerticalScrollBarVisibility { get; set; }
-        public ScrollBarVisibility HorizontalScrollBarVisibility { get; set; }
-
-        private string GetHtmlStyleFromStyleDictionary(Dictionary<string, string> styles)
+        // always true
+        public bool IsReadOnly
         {
-            string htmlStyle = "";
-            if (styles.Any()) htmlStyle = "style=";
-            foreach (var item in styles)
+            get { return (bool)GetValue(IsReadOnlyProperty); }
+            set
             {
-                htmlStyle = $"{htmlStyle}{item.Key}:{item.Value};";
+                if (value == false)
+                {
+                    Debug.WriteLine("RichTextBoxReadOnly: False value of IsReadOnly property is not supported.");
+                }
+                SetValue(IsReadOnlyProperty, value);
             }
-            return htmlStyle;
         }
 
-        private IEnumerable<string> GetTagsList(string originalText)
+        public static readonly DependencyProperty TextAlignmentProperty =
+            DependencyProperty.Register(nameof(TextAlignment), typeof(TextAlignment), typeof(HtmlPresenterEx), new PropertyMetadata(TextAlignment.Left));
+
+        // TODO: Figure out if we need to implement this property. Because there are some Center values across the project, instead of default Left. 
+        public TextAlignment TextAlignment
         {
-            var expression = "<(“[^”]*”|'[^’]*’|[^'”>])*>";
-            var regex = new Regex(expression);
-            var result = regex.Matches(originalText).Cast<Match>().Select(u => u.Value);
-            return result;
+            get => (TextAlignment)GetValue(TextAlignmentProperty);
+            set
+            {
+                if (value != TextAlignment.Left)
+                {
+                    Debug.WriteLine($"RichTextBoxReadOnly: TextAlignment {value} is not supported.");
+                }
+                SetValue(TextAlignmentProperty, value);
+            }
         }
 
-        public string ProcessHtml(string originalText)
+        public static readonly DependencyProperty TextWrappingProperty =
+            DependencyProperty.Register(nameof(TextWrapping), typeof(TextWrapping), typeof(HtmlPresenterEx), new PropertyMetadata(TextWrapping.Wrap));
+
+        // always Wrap
+        public TextWrapping TextWrapping
+        {
+            get => (TextWrapping)GetValue(TextWrappingProperty);
+            set
+            {
+                if (value != TextWrapping.Wrap)
+                {
+                    Debug.WriteLine($"RichTextBoxReadOnly: TextWrapping {value} is not supported.");
+                }
+                SetValue(TextWrappingProperty, value);
+            }
+        }
+
+        private ScrollBarVisibility _verticalScrollBarVisibility;
+        public ScrollBarVisibility VerticalScrollBarVisibility
+        {
+            get => _verticalScrollBarVisibility;
+            set
+            {
+                if (value == ScrollBarVisibility.Auto || value == ScrollBarVisibility.Visible)
+                {
+                    Debug.WriteLine($"RichTextBoxReadOnly: VerticalScrollBarVisibility {value} is not supported.");
+                }
+                _verticalScrollBarVisibility = value;
+            }
+        }
+
+        private ScrollBarVisibility _horizontalScrollBarVisibility;
+        public ScrollBarVisibility HorizontalScrollBarVisibility
+        {
+            get => _horizontalScrollBarVisibility;
+            set
+            {
+                if (value == ScrollBarVisibility.Auto || value == ScrollBarVisibility.Visible)
+                {
+                    Debug.WriteLine($"RichTextBoxReadOnly: HorizontalScrollBarVisibility {value} is not supported.");
+                }
+                _horizontalScrollBarVisibility = value;
+            }
+        }
+        #endregion
+
+        private string ProcessHtml(string originalText)
         {
             if (string.IsNullOrWhiteSpace(originalText)) return "";
             var tagsList = GetTagsList(originalText);
@@ -223,6 +287,14 @@ namespace Virtuoso.Core.Controls
             plainText.Replace("<LineBreak/>", "<br/>");
 
             var result = plainText.ToString();
+            return result;
+        }
+
+        private IEnumerable<string> GetTagsList(string originalText)
+        {
+            var expression = "<(“[^”]*”|'[^’]*’|[^'”>])*>";
+            var regex = new Regex(expression);
+            var result = regex.Matches(originalText).Cast<Match>().Select(u => u.Value);
             return result;
         }
 
@@ -272,7 +344,7 @@ namespace Virtuoso.Core.Controls
                     }
                     else
                     {
-                        System.Diagnostics.Debug.WriteLine($"Property {property} is not supported");
+                        Debug.WriteLine($"RichTextBoxReadOnly: Property {property} is not supported");
                     }
                 }
             }
@@ -280,7 +352,18 @@ namespace Virtuoso.Core.Controls
             return styles;
         }
 
-        public static string HexToColor(string hexColor)
+        private string GetHtmlStyleFromStyleDictionary(Dictionary<string, string> styles)
+        {
+            string htmlStyle = "";
+            if (styles.Any()) htmlStyle = "style=";
+            foreach (var item in styles)
+            {
+                htmlStyle = $"{htmlStyle}{item.Key}:{item.Value};";
+            }
+            return htmlStyle;
+        }
+
+        private string HexToColor(string hexColor)
         {
             if (string.IsNullOrWhiteSpace(hexColor))
                 return "";
@@ -298,7 +381,7 @@ namespace Virtuoso.Core.Controls
 #else
     //this is a dummy class to resolve the issue of missing type in silverlight version
     //missing type exception is raised from style for HTMLPresenterEx from CoreStyles.xaml
-    public class HtmlPresenterEx : RichTextBox
+    public class RichTextBoxReadOnly : RichTextBox
     {
     }
 #endif
