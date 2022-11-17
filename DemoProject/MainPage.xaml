@@ -8,7 +8,80 @@
              d:DesignWidth="400"
              mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
-    </Grid>
+    <UserControl.Resources>
+        <Color x:Key="Gray4">#FFB9B9B9</Color>
+
+        <Style TargetType="ScrollBar">
+            <Setter Property="MinWidth" Value="20"/>
+            <Setter Property="MinHeight" Value="20"/>
+            <Setter Property="IsTabStop" Value="False"/>
+            <Setter Property="Template">
+                <Setter.Value>
+                    <ControlTemplate TargetType="ScrollBar">
+                        <Grid x:Name="Root">
+                            <VisualStateManager.VisualStateGroups>
+                                <VisualStateGroup x:Name="CommonStates">
+                                    <VisualState x:Name="Normal"/>
+                                    <VisualState x:Name="MouseOver"/>
+                                    <VisualState x:Name="Disabled">
+                                        <Storyboard>
+                                            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="Opacity" Storyboard.TargetName="Root">
+                                                <SplineDoubleKeyFrame KeyTime="0" Value="0.5"/>
+                                            </DoubleAnimationUsingKeyFrames>
+                                        </Storyboard>
+                                    </VisualState>
+                                </VisualStateGroup>
+                            </VisualStateManager.VisualStateGroups>
+                            <Grid x:Name="HorizontalRoot" Height="11">
+                                <Grid.ColumnDefinitions>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                    <ColumnDefinition Width="*"/>
+                                    <ColumnDefinition Width="Auto"/>
+                                </Grid.ColumnDefinitions>
+                                <Border BorderThickness="0,0,0,1" Grid.RowSpan="1" Margin="0,0,0,-1" Grid.ColumnSpan="5" Visibility="Collapsed" >
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="{StaticResource Gray4}"/>
+                                    </Border.BorderBrush>
+                                </Border>
+                                <RepeatButton x:Name="HorizontalSmallDecrease" Grid.Column="0" IsTabStop="False" Interval="50" Margin="1" Width="16"/>
+                                <RepeatButton x:Name="HorizontalLargeDecrease" Grid.Column="1" IsTabStop="False" Interval="50" Width="0"/>
+                                <Thumb x:Name="HorizontalThumb" Background="{TemplateBinding Background}" Grid.Column="2" MinWidth="18" Width="18"/>
+                                <RepeatButton x:Name="HorizontalLargeIncrease" Grid.Column="3" IsTabStop="False" Interval="50"/>
+                                <RepeatButton x:Name="HorizontalSmallIncrease" Grid.Column="4" IsTabStop="False" Interval="50" Margin="1" Width="16"/>
+                            </Grid>
+                            <Grid x:Name="VerticalRoot" Visibility="Collapsed" Width="11">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="Auto"/>
+                                    <RowDefinition Height="*"/>
+                                    <RowDefinition Height="Auto"/>
+                                </Grid.RowDefinitions>
+                                <Border BorderThickness="0,0,1,0" Margin="0,0,-1,0" Grid.RowSpan="5" Visibility="Collapsed" >
+                                    <Border.BorderBrush>
+                                        <SolidColorBrush Color="{StaticResource Gray4}"/>
+                                    </Border.BorderBrush>
+                                </Border>
+                                <RepeatButton x:Name="VerticalSmallDecrease" Height="16" IsTabStop="False" Interval="50" Margin="1" Grid.Row="0"/>
+                                <RepeatButton x:Name="VerticalLargeDecrease" Height="0" IsTabStop="False" Interval="50" Grid.Row="1"/>
+                                <Thumb x:Name="VerticalThumb" Height="18" MinHeight="18" Grid.Row="2"/>
+                                <RepeatButton x:Name="VerticalLargeIncrease" IsTabStop="False" Interval="50" Grid.Row="3"/>
+                                <RepeatButton x:Name="VerticalSmallIncrease" Height="16" IsTabStop="False" Interval="50" Margin="1" Grid.Row="4"/>
+                            </Grid>
+                        </Grid>
+                    </ControlTemplate>
+                </Setter.Value>
+            </Setter>
+        </Style>
+    </UserControl.Resources>
+
+    <StackPanel>
+        <sdk:DataGrid VerticalScrollBarVisibility="Visible">
+            <sdk:DataGrid.Columns>
+                <sdk:DataGridTextColumn Header="Service"/>
+            </sdk:DataGrid.Columns>
+        </sdk:DataGrid>
+    </StackPanel>
 </UserControl>
