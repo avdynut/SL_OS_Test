@@ -1,6 +1,7 @@
 ﻿<UserControl x:Class="DemoProject.MainPage"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/winfx/2006/xaml/presentation/toolkit"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
@@ -9,6 +10,13 @@
              mc:Ignorable="d">
 
     <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
+        <toolkit:ListBoxDragDropTarget>
+            <ListBox Width="800" Height="200">
+                <StackPanel Orientation="Horizontal">
+                    <TextBlock Text="Cannot select this text is SL, because this element should be draggable"/>
+                    <TextBox Text="But TextBox should be focusable and editable"/>
+                </StackPanel>
+            </ListBox>
+        </toolkit:ListBoxDragDropTarget>
     </Grid>
 </UserControl>
