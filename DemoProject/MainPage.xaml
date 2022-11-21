@@ -4,11 +4,21 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+             xmlns:tooltip="clr-namespace:Silverlight.Controls.ToolTips;assembly=Silverlight.Controls.ToolTips"
              d:DesignHeight="300"
              d:DesignWidth="400"
              mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" Background="White">
+    <StackPanel x:Name="LayoutRoot" Background="White">
         <TextBlock Text="Hello!"/>
-    </Grid>
+        <Button Content="Sdk Tooltip" sdk:ToolTipService.ToolTip="Text"/>
+        <Button Content="Library Tooltip" tooltip:ToolTipService.ToolTip="Text"/>
+        <Button Content="Click">
+            <tooltip:ToolTipService.ToolTip>
+                <tooltip:ToolTip DisplayTime="Forever" InitialDelay="0">
+                    <TextBlock Text="This field will" TextWrapping="Wrap"/>
+                </tooltip:ToolTip>
+            </tooltip:ToolTipService.ToolTip>
+        </Button>
+    </StackPanel>
 </UserControl>

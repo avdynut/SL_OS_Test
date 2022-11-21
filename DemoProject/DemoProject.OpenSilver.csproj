@@ -10,6 +10,7 @@
 
   <ItemGroup>
     <PackageReference Include="OpenSilver" Version="1.2.0-preview-2022-11-20-215510-56901d13" />
+    <PackageReference Include="Silverlight.Controls.ToolTips.OpenSilver" Version="1.0.0-private-2022-03-07-122116-31770396" />
   </ItemGroup>
 
   <ItemGroup>
@@ -24,7 +25,6 @@
   <ItemGroup>
     <Compile Include="App.xaml.cs" />
     <Compile Include="MainPage.xaml.cs" />
-    <Compile Include="ViewModels\TestViewModel.cs" />
   </ItemGroup>
   
 </Project>
