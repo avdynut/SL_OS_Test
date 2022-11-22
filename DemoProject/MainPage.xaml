@@ -11,7 +11,7 @@
 
     <StackPanel x:Name="LayoutRoot" Background="White">
         <TextBlock Text="Hello!"/>
-        <Button Content="Sdk Tooltip" sdk:ToolTipService.ToolTip="Text"/>
+        <Button Content="Sdk Tooltip" ToolTipService.ToolTip="Text"/>
         <Button Content="Library Tooltip" tooltip:ToolTipService.ToolTip="Text"/>
         <Button Content="Click">
             <tooltip:ToolTipService.ToolTip>
