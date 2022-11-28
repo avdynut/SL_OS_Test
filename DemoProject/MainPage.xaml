@@ -9,16 +9,22 @@
              d:DesignWidth="400"
              mc:Ignorable="d">
 
-    <StackPanel x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
-        <Button Content="Sdk Tooltip" ToolTipService.ToolTip="Text"/>
-        <Button Content="Library Tooltip" tooltip:ToolTipService.ToolTip="Text"/>
-        <Button Content="Click">
-            <tooltip:ToolTipService.ToolTip>
-                <tooltip:ToolTip DisplayTime="Forever" InitialDelay="0">
-                    <TextBlock Text="This field will" TextWrapping="Wrap"/>
-                </tooltip:ToolTip>
-            </tooltip:ToolTipService.ToolTip>
-        </Button>
-    </StackPanel>
+    <TabControl>
+        <TabItem Header="1">
+            <StackPanel x:Name="LayoutRoot" Background="White">
+                <Button Content="Sdk Tooltip" ToolTipService.ToolTip="ToolTip Message"/>
+                <Button tooltip:ToolTipService.ToolTip="ToolTip Message" Content="Library Tooltip"/>
+                <Button Content="Click">
+                    <tooltip:ToolTipService.ToolTip>
+                        <tooltip:ToolTip DisplayTime="Forever" InitialDelay="0">
+                            <TextBlock Text="ToolTip Message" TextWrapping="Wrap"/>
+                        </tooltip:ToolTip>
+                    </tooltip:ToolTipService.ToolTip>
+                </Button>
+            </StackPanel>
+        </TabItem>
+        <TabItem Header="2">
+            <TextBlock Text="Hello!"/>
+        </TabItem>
+    </TabControl>
 </UserControl>
