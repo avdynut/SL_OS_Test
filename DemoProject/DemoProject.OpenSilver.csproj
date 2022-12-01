@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenSilver" Version="1.2.0-preview-2022-12-01-112226-e0042545" />
+    <PackageReference Include="OpenSilver" />
   </ItemGroup>
 
   <ItemGroup>
