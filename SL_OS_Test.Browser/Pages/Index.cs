@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Components;
 using Microsoft.AspNetCore.Components.Rendering;
 using Microsoft.JSInterop;
-using SL_OS_Test.Browser.Interop;
+using OpenSilver.WebAssembly;
 
 namespace SL_OS_Test.Browser.Pages;
 [Route("/")]
