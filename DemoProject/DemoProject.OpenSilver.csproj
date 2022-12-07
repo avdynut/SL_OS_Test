@@ -6,14 +6,15 @@
 	  <DefineSilverlight>true</DefineSilverlight>
     <LangVersion>Preview</LangVersion>
     <RootNamespace>DemoProject</RootNamespace>
+    <IsSLMigration>True</IsSLMigration>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="OpenSilver" />
+    <PackageReference Include="OpenSilver.Compiler" />
   </ItemGroup>
 
   <ItemGroup>
-	<ApplicationDefinition Include="App.xaml">
+	  <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
     <Page Include="MainPage.xaml">
@@ -25,6 +26,10 @@
     <Compile Include="App.xaml.cs" />
     <Compile Include="MainPage.xaml.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\OpenSilver\src\Runtime\Runtime\Runtime.OpenSilver.csproj" />
   </ItemGroup>
   
 </Project>
