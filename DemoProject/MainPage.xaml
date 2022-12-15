@@ -3,81 +3,29 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
              d:DesignHeight="300"
              d:DesignWidth="400"
              mc:Ignorable="d">
 
-    <ScrollViewer Grid.Row="0"
-                  Height="Auto"
-                  HorizontalScrollBarVisibility="Disabled"
-                  VerticalScrollBarVisibility="Auto">
-        <Grid>
-            <Grid.RowDefinitions>
-                <RowDefinition Height="1"/>
-                <RowDefinition Height="*"/>
-            </Grid.RowDefinitions>
-            <Grid.ColumnDefinitions>
-                <ColumnDefinition Width="*"/>
-            </Grid.ColumnDefinitions>
-            <TextBlock Grid.Row="0"
-                       Grid.Column="0"
-                       Width="600"
-                       Text=" "/>
-            <ItemsControl Grid.Row="1" Grid.Column="0">
-                <ContentControl HorizontalContentAlignment="Stretch" IsTabStop="False">
-                    <Grid x:Name="RiskAssessmentGrid" Height="{Binding ActualHeight, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="28"/>
-                            <RowDefinition Height="*"/>
-                            <RowDefinition Height="23"/>
-                            <RowDefinition Height="26"/>
-                            <RowDefinition Height="Auto"/>
-                        </Grid.RowDefinitions>
-                        <TextBlock FontSize="14"
-                                   FontWeight="Bold"
-                                   Text="Label"/>
-                        <ScrollViewer Grid.Row="1"
-                                      MinHeight="320"
-                                      HorizontalScrollBarVisibility="Disabled"
-                                      VerticalScrollBarVisibility="Auto">
-                            <ItemsControl Margin="4"
-                                          IsTabStop="False"
-                                          TabNavigation="Local">
-                                <TextBlock Text="qqq"/>
-                                <TextBlock Text="qqq"/>
-                                <TextBlock Text="qqq"/>
-                                <TextBlock Text="qqq"/>
-                                <TextBlock Text="qqq"/>
-                                <TextBlock Text="qqq"/>
-                                <TextBlock Text="qqq"/>
-                                <TextBlock Text="qqq"/>
-                                <TextBlock Text="qqq"/>
-                                <TextBlock Text="qqq"/>
-                                <TextBlock Text="qqq"/>
-                                <TextBlock Text="qqq"/>
-                            </ItemsControl>
-                        </ScrollViewer>
-                        <TextBlock Grid.Row="2"
-                                   Margin="4,4,4,4"
-                                   HorizontalAlignment="Left"
-                                   VerticalAlignment="Center"
-                                   Text="ValidationMessage"
-                                   TextWrapping="Wrap"
-                                   Visibility="Visible"/>
-                        <StackPanel Name="scorePanel"
-                                    Grid.Row="3"
-                                    Orientation="Horizontal">
-                            <TextBlock FontSize="14"
-                                       FontWeight="Bold"
-                                       Text="Score:"/>
-                            <TextBlock FontSize="14"
-                                       FontWeight="Bold"
-                                       Text="CurrentRiskRange.Label"/>
-                        </StackPanel>
-                    </Grid>
-                </ContentControl>
-            </ItemsControl>
-        </Grid>
+    <ScrollViewer HorizontalScrollBarVisibility="Disabled" VerticalScrollBarVisibility="Auto">
+        <ItemsControl>
+            <Grid Height="{Binding ActualHeight, Mode=TwoWay, RelativeSource={RelativeSource AncestorType=ItemsControl}}">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="23"/>
+                </Grid.RowDefinitions>
+                <ScrollViewer Grid.Row="0"
+                              MinHeight="320"
+                              HorizontalScrollBarVisibility="Disabled"
+                              VerticalScrollBarVisibility="Auto">
+                    <ItemsControl>
+                        <TextBlock Text="1"/>
+                        <TextBlock Text="2"/>
+                        <TextBlock Text="3"/>
+                    </ItemsControl>
+                </ScrollViewer>
+                <TextBlock Grid.Row="1" Text="Overlapping Element"/>
+            </Grid>
+        </ItemsControl>
     </ScrollViewer>
 </UserControl>
