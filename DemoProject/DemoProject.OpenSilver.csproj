@@ -16,6 +16,9 @@
 	<ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
     </ApplicationDefinition>
+	<Page Include="ChildWindow1.xaml">
+	  <Generator>MSBuild:Compile</Generator>
+	</Page>
     <Page Include="MainPage.xaml">
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -23,6 +26,7 @@
 
   <ItemGroup>
     <Compile Include="App.xaml.cs" />
+    <Compile Include="ChildWindow1.xaml.cs" />
     <Compile Include="MainPage.xaml.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
   </ItemGroup>
