@@ -11,6 +11,17 @@ namespace DemoProject
         {
             InitializeComponent();
             DataContext = _viewModel;
+
+            BindingValidationError += MainPage_BindingValidationError;
+        }
+
+        private void MainPage_BindingValidationError(object sender, ValidationErrorEventArgs e)
+        {
+        }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            _viewModel.Validate();
         }
     }
 }

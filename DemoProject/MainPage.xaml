@@ -8,7 +8,10 @@
              d:DesignWidth="400"
              mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
-    </Grid>
+    <StackPanel>
+        <TextBox Text="{Binding FirstName, Mode=TwoWay, NotifyOnValidationError=True}"/>
+        <TextBox Text="{Binding LastName, Mode=TwoWay, NotifyOnValidationError=True}"/>
+        <Button Content="Raise errors" Click="Button_Click"/>
+        <sdk:ValidationSummary/>
+    </StackPanel>
 </UserControl>
