@@ -9,8 +9,8 @@
              mc:Ignorable="d">
 
     <StackPanel>
-        <TextBox Text="{Binding FirstName, Mode=TwoWay, NotifyOnValidationError=True}"/>
-        <TextBox Text="{Binding LastName, Mode=TwoWay, NotifyOnValidationError=True}"/>
+        <TextBox Text="{Binding Test.FirstName, Mode=TwoWay, NotifyOnValidationError=True}"/>
+        <TextBox Text="{Binding Test.LastName, Mode=TwoWay, NotifyOnValidationError=True}"/>
         <Button Content="Raise errors" Click="Button_Click"/>
         <sdk:ValidationSummary/>
     </StackPanel>

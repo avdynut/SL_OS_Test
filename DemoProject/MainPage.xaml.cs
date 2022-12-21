@@ -5,7 +5,7 @@ namespace DemoProject
 {
     public partial class MainPage : UserControl
     {
-        private readonly TestViewModel _viewModel = new TestViewModel();
+        private readonly MainViewModel _viewModel = new MainViewModel();
 
         public MainPage()
         {
@@ -21,7 +21,7 @@ namespace DemoProject
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            _viewModel.Validate();
+            _viewModel.Test.Validate();
         }
     }
 }

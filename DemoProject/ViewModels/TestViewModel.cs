@@ -6,6 +6,11 @@ using System.Linq;
 
 namespace DemoProject.ViewModels
 {
+    public class MainViewModel
+    {
+        public TestViewModel Test { get; set; } = new TestViewModel();
+    }
+
     public class TestViewModel : INotifyPropertyChanged, INotifyDataErrorInfo
     {
         public string FirstName { get; set; }
