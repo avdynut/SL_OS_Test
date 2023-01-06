@@ -8,7 +8,49 @@
              d:DesignWidth="400"
              mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
+    <UserControl.Resources>
+        <DataTemplate x:Key="ItemTemplate">
+            <ContentControl Content="{Binding}" Width="200" Height="40">
+                <Control.Template>
+                    <ControlTemplate>
+                        <Grid 
+                              ToolTipService.ToolTip="{Binding Length}">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="{Binding Length}"/>
+                                <ColumnDefinition Width="*"/>
+                            </Grid.ColumnDefinitions>
+
+                            <Border Grid.Column="0" Background="Gray"/>
+                            <Border Grid.Column="0" Background="LightBlue"/>
+                        </Grid>
+                    </ControlTemplate>
+                </Control.Template>
+            </ContentControl>
+
+        </DataTemplate>
+    </UserControl.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Button Click="Button_Click" Content="Update"/>
+
+        <sdk:DataGrid Grid.Row="1"
+                      AutoGenerateColumns="False"
+                      ItemsSource="{Binding Items}">
+            <sdk:DataGrid.Columns>
+                <sdk:DataGridTemplateColumn Width="*"
+                                            CellTemplate="{StaticResource ItemTemplate}"
+                                            Header="Length"/>
+            </sdk:DataGrid.Columns>
+        </sdk:DataGrid>
+
+        <ItemsControl Grid.Row="2"
+                      ItemTemplate="{StaticResource ItemTemplate}"
+                      ItemsSource="{Binding Items}"/>
     </Grid>
 </UserControl>
