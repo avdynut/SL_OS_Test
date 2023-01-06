@@ -1,31 +1,24 @@
-﻿using DemoProject.ViewModels;
-using System;
+﻿using System;
 using System.Windows.Controls;
 
 namespace DemoProject
 {
     public partial class MainPage : UserControl
     {
-        private readonly TestViewModel _viewModel = new TestViewModel();
-
         public MainPage()
         {
             InitializeComponent();
-            DataContext = _viewModel;
 
-            var random = new Random();
-            for (int i = 0; i < 1; i++)
-            {
-                _viewModel.Items.Add(new Item { Length = random.Next(100) });
-            }
+#if OPENSILVER
+            CustomLayout = true;
+#endif
         }
 
         private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
         {
-            foreach (var item in _viewModel.Items)
-            {
-                item.Length += 10;
-            }
+            var percent = new Random().Next(0, 100);
+            testGrid.ColumnDefinitions[0].Width = new System.Windows.GridLength(percent, System.Windows.GridUnitType.Star);
+            testGrid.ColumnDefinitions[1].Width = new System.Windows.GridLength(100 - percent, System.Windows.GridUnitType.Star);
         }
     }
 }

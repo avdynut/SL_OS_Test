@@ -3,32 +3,9 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-             xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
              d:DesignHeight="300"
              d:DesignWidth="400"
              mc:Ignorable="d">
-
-    <UserControl.Resources>
-        <DataTemplate x:Key="ItemTemplate">
-            <ContentControl Content="{Binding}" Width="200" Height="40">
-                <Control.Template>
-                    <ControlTemplate>
-                        <Grid 
-                              ToolTipService.ToolTip="{Binding Length}">
-                            <Grid.ColumnDefinitions>
-                                <ColumnDefinition Width="{Binding Length}"/>
-                                <ColumnDefinition Width="*"/>
-                            </Grid.ColumnDefinitions>
-
-                            <Border Grid.Column="0" Background="Gray"/>
-                            <Border Grid.Column="0" Background="LightBlue"/>
-                        </Grid>
-                    </ControlTemplate>
-                </Control.Template>
-            </ContentControl>
-
-        </DataTemplate>
-    </UserControl.Resources>
 
     <Grid>
         <Grid.RowDefinitions>
@@ -39,18 +16,13 @@
 
         <Button Click="Button_Click" Content="Update"/>
 
-        <sdk:DataGrid Grid.Row="1"
-                      AutoGenerateColumns="False"
-                      ItemsSource="{Binding Items}">
-            <sdk:DataGrid.Columns>
-                <sdk:DataGridTemplateColumn Width="*"
-                                            CellTemplate="{StaticResource ItemTemplate}"
-                                            Header="Length"/>
-            </sdk:DataGrid.Columns>
-        </sdk:DataGrid>
-
-        <ItemsControl Grid.Row="2"
-                      ItemTemplate="{StaticResource ItemTemplate}"
-                      ItemsSource="{Binding Items}"/>
+        <Grid x:Name="testGrid" Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="*"/>
+            </Grid.ColumnDefinitions>
+            <Border Grid.Column="0" Background="Gray"/>
+            <Border Grid.Column="0" Background="LightBlue"/>
+        </Grid>
     </Grid>
 </UserControl>
