@@ -14,11 +14,22 @@ namespace DemoProject
             InitializeComponent();
             DataContext = _viewModel;
 
-            var xaml = @"<Grid xmlns='http://schemas.microsoft.com/winfx/2006/xaml/presentation' xmlns:input='clr-namespace:SLExtensions.Input;assembly=SLExtensions' >    <Grid.ColumnDefinitions>        <ColumnDefinition Width='Auto' />        <ColumnDefinition Width='Auto' />        <ColumnDefinition Width='*' />        <ColumnDefinition Width='Auto' />        <ColumnDefinition Width='Auto' />        <ColumnDefinition Width='Auto' />    </Grid.ColumnDefinitions>    <Grid.RowDefinitions>        <RowDefinition Height='Auto' />    </Grid.RowDefinitions>    <TextBlock Text='Station' Style='{StaticResource FieldNameTextBlock}'/>    <TextBlock Grid.Column='1' Text='Reference' Style='{StaticResource FieldNameTextBlock}'/>    <TextBlock Grid.Column='2' Text='Description' Style='{StaticResource FieldNameTextBlock}'/>    <TextBlock Grid.Column='3' Text='Q' Style='{StaticResource FieldNameTextBlock}'/>    <TextBlock Grid.Column='4' Text='Measures' Style='{StaticResource FieldNameTextBlock}'/>    <TextBlock Grid.Column='5' Text='S1' Style='{StaticResource FieldNameTextBlock}'/></Grid>";
+            var xaml = @"<Canvas xmlns=""http://schemas.microsoft.com/winfx/2006/xaml/presentation"" xmlns:x=""http://schemas.microsoft.com/winfx/2006/xaml"">
+            <Canvas.Resources>
+                <LinearGradientBrush x:Key=""MyBrush"">
+                    <GradientStop Offset=""0"" Color=""#ffcccccc""/>
+                    <GradientStop Offset=""1"" Color=""#ffffffcc""/>
+                </LinearGradientBrush>
+            </Canvas.Resources>
+            <Rectangle Width=""100""
+                       Height=""20""
+                       Fill=""{StaticResource MyBrush}""/>
+        </Canvas>";
 
             try
             {
                 var content = (UIElement)XamlReader.Load(xaml);
+                //var viewbox = new Viewbox { Content = content, Width = 1000, Height = 800 };
                 Grid.SetRow(content, 1);
                 LayoutRoot.Children.Add(content);
             }
