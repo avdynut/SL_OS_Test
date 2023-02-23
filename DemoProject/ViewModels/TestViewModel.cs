@@ -1,9 +1,19 @@
-﻿using System.ComponentModel;
+﻿using System.Collections.Generic;
+using System.ComponentModel;
 
 namespace DemoProject.ViewModels
 {
     public class TestViewModel : INotifyPropertyChanged
     {
+        public List<string> SearchFields { get; set; } = new List<string>
+        {
+            "1",
+            "2",
+            "3",
+            "4",
+            "5",
+        };
+
         public TestViewModel()
         {
         }
