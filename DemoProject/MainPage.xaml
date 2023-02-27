@@ -23,8 +23,11 @@
             <TextBlock Text="Item 1"/>
             <TextBlock Text="Item 2"/>
             <TextBlock Text="Item 3"/>
+            <TextBlock Text="Item 4"/>
+            <TextBlock Text="Item 5"/>
+            <TextBlock Text="Item 6"/>
         </ListBox>
-        <ListBox Grid.Row="1" Grid.Column="1">
+        <ListBox Grid.Row="1" Grid.Column="1" CustomLayout="True">
             <ListBox.ItemsPanel>
                 <ItemsPanelTemplate>
                     <VirtualizingStackPanel/>
@@ -33,6 +36,9 @@
             <TextBlock Text="Item 1"/>
             <TextBlock Text="Item 2"/>
             <TextBlock Text="Item 3"/>
+            <TextBlock Text="Item 4"/>
+            <TextBlock Text="Item 5"/>
+            <TextBlock Text="Item 6"/>
         </ListBox>
     </Grid>
 </UserControl>
