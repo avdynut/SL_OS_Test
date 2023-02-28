@@ -3,8 +3,8 @@
     <ManagePackageVersionsCentrally>true</ManagePackageVersionsCentrally>
   </PropertyGroup>
   <ItemGroup>
-    <PackageVersion Include="OpenSilver" Version="1.2.0-preview-2023-02-27-101151-430d3f51" />
-    <PackageVersion Include="OpenSilver.Simulator" Version="1.2.0-preview-2023-02-27-101151-430d3f51" />
+    <PackageVersion Include="OpenSilver" Version="1.2.0-preview-2023-02-27-174718-94c5a8f4" />
+    <PackageVersion Include="OpenSilver.Simulator" Version="1.2.0-preview-2023-02-27-174718-94c5a8f4" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly" Version="7.0.3" />
     <PackageVersion Include="Microsoft.AspNetCore.Components.WebAssembly.DevServer" Version="7.0.3" />
   </ItemGroup>
