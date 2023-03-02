@@ -1,5 +1,6 @@
 ﻿using DemoProject.ViewModels;
 using System.Windows.Controls;
+using System.Windows.Media;
 
 namespace DemoProject
 {
@@ -11,6 +12,15 @@ namespace DemoProject
         {
             InitializeComponent();
             DataContext = _viewModel;
+
+#if OPENSILVER
+            svgEllipse.UseSvgRenderer = true;
+            svgLine.UseSvgRenderer = true;
+            svgPolyline.UseSvgRenderer = true;
+            svgPolygon.UseSvgRenderer = true;
+            svgRectangle.UseSvgRenderer = true;
+            svgPath.UseSvgRenderer = true;
+#endif
         }
     }
 }

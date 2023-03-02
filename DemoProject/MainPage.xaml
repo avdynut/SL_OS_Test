@@ -4,11 +4,25 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
-             d:DesignHeight="300"
+             d:DesignHeight="1300"
              d:DesignWidth="400"
              mc:Ignorable="d">
 
-    <Grid x:Name="LayoutRoot" Background="White">
-        <TextBlock Text="Hello!"/>
-    </Grid>
+    <ScrollViewer>
+        <StackPanel>
+            <Ellipse Width="100" Height="50" Fill="LightBlue" Stroke="Gray" StrokeThickness="5" StrokeDashArray="5 1"/>
+            <Ellipse Width="100" Height="50" Fill="LightBlue" Stroke="Gray" StrokeThickness="5" StrokeDashArray="5 1" Name="svgEllipse"/>
+            <Line X1="1" X2="100" Y1="2" Y2="5" StrokeThickness="2" Stroke="Blue" StrokeStartLineCap="Round" StrokeEndLineCap="Round"/>
+            <Line X1="1" X2="100" Y1="2" Y2="5" StrokeThickness="2" Stroke="Blue" StrokeStartLineCap="Round" StrokeEndLineCap="Round" Name="svgLine"/>
+            <Polyline Stroke="Red" StrokeThickness="3" FillRule="EvenOdd" Points="1,50 10,80 20,40" StrokeMiterLimit="1"/>
+            <Polyline Stroke="Red" StrokeThickness="3" FillRule="EvenOdd" Points="1,50 10,80 20,40" StrokeMiterLimit="1" Name="svgPolyline"/>
+            <Polygon Stroke="Red" Fill="Yellow" StrokeThickness="3" FillRule="EvenOdd" Points="1,50 10,80 20,40" StrokeLineJoin="Round" />
+            <Polygon Stroke="Red" Fill="Yellow" StrokeThickness="3" FillRule="EvenOdd" Points="1,50 10,80 20,40" StrokeLineJoin="Round" Name="svgPolygon"/>
+            <Rectangle Width="100" Height="50" Fill="Gray" Stroke="Pink" RadiusX="20" RadiusY="5"/>
+            <Rectangle Width="100" Height="50" Fill="Gray" Stroke="Pink" RadiusX="20" RadiusY="5" Name="svgRectangle"/>
+            <Path Stroke="DarkGoldenRod" StrokeThickness="3" Data="M 100,200 C 100,25 400,350 400,175 H 280" Width="500" Height="300" />
+            <Path Stroke="DarkGoldenRod" StrokeThickness="3" Data="M 100,200 C 100,25 400,350 400,175 H 280" Width="500" Height="300" Name="svgPath"/>
+            
+        </StackPanel>
+    </ScrollViewer>
 </UserControl>
