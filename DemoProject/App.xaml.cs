@@ -22,7 +22,7 @@ namespace DemoProject
             //Host.Settings.EnableWebRequestsLogging = true;
             //Host.Settings.EnableInteropLogging = true;
             //Host.Settings.ScrollDebounce = TimeSpan.FromMilliseconds(300);
-            //Host.Settings.RenderSvgShapes = true;
+            //Host.Settings.RenderShapesUsingSvg = true;
 #endif
 
             InitializeComponent();

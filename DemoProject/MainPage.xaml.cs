@@ -14,12 +14,12 @@ namespace DemoProject
             DataContext = _viewModel;
 
 #if OPENSILVER
-            svgEllipse.UseSvgRenderer = true;
-            svgLine.UseSvgRenderer = true;
-            svgPolyline.UseSvgRenderer = true;
-            svgPolygon.UseSvgRenderer = true;
-            svgRectangle.UseSvgRenderer = true;
-            svgPath.UseSvgRenderer = true;
+            svgEllipse.RenderUsingSvg = true;
+            svgLine.RenderUsingSvg = true;
+            svgPolyline.RenderUsingSvg = true;
+            svgPolygon.RenderUsingSvg = true;
+            svgRectangle.RenderUsingSvg = true;
+            svgPath.RenderUsingSvg = true;
 #endif
         }
     }
