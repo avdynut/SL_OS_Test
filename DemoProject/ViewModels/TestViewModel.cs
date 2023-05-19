@@ -4,6 +4,36 @@ namespace DemoProject.ViewModels
 {
     public class TestViewModel : INotifyPropertyChanged
     {
+        public string Title { get; set; } = "Title";
+        public string Description { get; set; } = @"DescriptionescriptionD
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+escriptionDescriptionDescriptionDescriptionDescription";
+
         public TestViewModel()
         {
         }

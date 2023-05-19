@@ -1,0 +1,80 @@
+﻿<sdk:ChildWindow x:Class="DemoProject.ChildWindow1"
+           xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation" 
+           xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" 
+              xmlns:sdk="http://schemas.microsoft.com/winfx/2006/xaml/presentation/sdk"
+           Width="400" Height="300" 
+           Title="ChildWindow1"
+           xmlns:local="clr-namespace:DemoProject">
+    <sdk:ChildWindow.Resources>
+        <Style x:Key="TextBlockStyle" TargetType="TextBlock">
+            <Setter Property="FontSize" Value="14"/>
+            <Setter Property="Foreground" Value="Black"/>
+            <Setter Property="TextWrapping" Value="Wrap"/>
+            <Setter Property="Margin" Value="7,3,7,3"/>
+            <Setter Property="Language" Value="en-GB"/>
+            <Setter Property="UseLayoutRounding" Value="True"/>
+        </Style>
+        <Style TargetType="TextBlock" BasedOn="{StaticResource TextBlockStyle}"/>
+    </sdk:ChildWindow.Resources>
+    
+    <Grid x:Name="LayoutRoot" Margin="2" MaxWidth="500">
+        <Grid.RowDefinitions>
+            <RowDefinition />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="*"/>
+                <RowDefinition Height="Auto"/>
+            </Grid.RowDefinitions>
+            <ScrollViewer HorizontalScrollBarVisibility="Disabled" Name="scrollViewer">
+                <Grid x:Name="grid">
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                        <RowDefinition Height="Auto"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!--<TextBlock Grid.Row="0" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                        Text="Title"/>
+                    <TextBlock Grid.Row="0" Grid.Column="1" MinWidth="300" VerticalAlignment="Center" HorizontalAlignment="Stretch" 
+                        Text="{Binding Path=Title}"/>-->
+
+                    <TextBlock Grid.Row="1" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                        Text="Description"/>
+                    <TextBlock Grid.Row="1" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" Name="descr"
+                        Text="{Binding Path=Description}" />
+
+                    <!--<TextBlock Grid.Row="2" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                        Text="Justification"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch" 
+                        Text="{Binding Path=Justification}"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                        Text="Requested by"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                        Text="{Binding Path=RequestedBy}"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" VerticalAlignment="Center" HorizontalAlignment="Stretch"
+                        Text="{Binding Path=RequestedByAlternative}"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" VerticalAlignment="Top" HorizontalAlignment="Right"
+                        Text="changed"/>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Width="150" Margin="7,4,7,0" VerticalAlignment="Top" HorizontalAlignment="Right" TextAlignment="Right" 
+                        Text="ch"/>-->
+                </Grid>
+            </ScrollViewer>
+        </Grid>
+
+        <Button x:Name="CancelButton" Content="Cancel" Click="CancelButton_Click" Width="75" Height="23" HorizontalAlignment="Right" Margin="0,12,0,0" Grid.Row="1" />
+        <Button x:Name="OKButton" Content="OK" Click="OKButton_Click" Width="75" Height="23" HorizontalAlignment="Right" Margin="0,12,79,0" Grid.Row="1" />
+    </Grid>
+</sdk:ChildWindow>

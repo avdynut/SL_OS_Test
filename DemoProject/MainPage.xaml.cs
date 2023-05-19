@@ -12,5 +12,11 @@ namespace DemoProject
             InitializeComponent();
             DataContext = _viewModel;
         }
+
+        private void Button_Click(object sender, System.Windows.RoutedEventArgs e)
+        {
+            var dialog = new ChildWindow1 { DataContext = DataContext };
+            dialog.Show();
+        }
     }
 }
