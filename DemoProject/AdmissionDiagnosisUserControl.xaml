@@ -1,0 +1,9 @@
+﻿<UserControl x:Class="DemoProject.AdmissionDiagnosisUserControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Name="control">
+
+    <Grid>
+        <TextBlock Text="test"/>
+    </Grid>
+</UserControl>

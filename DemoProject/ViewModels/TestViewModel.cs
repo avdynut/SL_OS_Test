@@ -4,6 +4,17 @@ namespace DemoProject.ViewModels
 {
     public class TestViewModel : INotifyPropertyChanged
     {
+        private object _currentAdmission;
+        public object CurrentAdmission
+        {
+            get { return _currentAdmission; }
+            set
+            {
+                _currentAdmission = value;
+                OnPropertyChanged(nameof(CurrentAdmission));
+            }
+        }
+
         public TestViewModel()
         {
         }
