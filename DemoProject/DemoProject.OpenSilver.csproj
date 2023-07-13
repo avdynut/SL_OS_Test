@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="MvvmLight.OpenSilver" />
     <PackageReference Include="OpenSilver" />
   </ItemGroup>
 
@@ -24,6 +25,7 @@
   <ItemGroup>
     <Compile Include="App.xaml.cs" />
     <Compile Include="MainPage.xaml.cs" />
+    <Compile Include="TestConverter.cs" />
     <Compile Include="ViewModels\TestViewModel.cs" />
   </ItemGroup>
   
